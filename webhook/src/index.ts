@@ -44,6 +44,11 @@ app.post("/webhook", async (req, res) => {
   }
 });
 
+// Default GET route
+app.get("/", (req, res) => {
+  res.send("Webhook BillBot is running, do not worry I'll handle the server, you go code...🧑‍💻");
+});
+
 app.listen(port, () => {
   console.log("Webhook BillBot is running...");
 });
