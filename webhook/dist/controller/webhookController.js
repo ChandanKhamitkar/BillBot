@@ -12,6 +12,7 @@ import dotenv from "dotenv";
 import generateInvoiceImage from "../services/imageGen.js";
 import FormData from "form-data";
 import { Readable } from "stream";
+import { defaultMessage } from "../utils/defaultMessages.js";
 dotenv.config();
 const TELEGRAM_API = `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}`;
 const webhookController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -20,6 +21,16 @@ const webhookController = (req, res) => __awaiter(void 0, void 0, void 0, functi
         console.log("Full data received : ", req.body);
         const message = (_b = (_a = req.body) === null || _a === void 0 ? void 0 : _a.message) === null || _b === void 0 ? void 0 : _b.text;
         const chatid = (_e = (_d = (_c = req.body) === null || _c === void 0 ? void 0 : _c.message) === null || _d === void 0 ? void 0 : _d.chat) === null || _e === void 0 ? void 0 : _e.id;
+        // Send Default Messages
+        if (message === "/start") {
+            yield sendMessage(chatid, defaultMessage["/start"]);
+            return res.sendStatus(200);
+        }
+        // Send Default Messages
+        else if (message === "/help") {
+            yield sendMessage(chatid, "Still help commands are not added...");
+            return res.sendStatus(200);
+        }
         // 1. Extract data ( Data formation state)
         const extractedData = yield extractData(message);
         if (!extractedData)

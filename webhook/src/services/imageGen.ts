@@ -6,24 +6,22 @@ dotenv.config();
 
 export default async function generateInvoiceImage(invoiceUrl: string) {
   
-  // console.log("Chromium path:", await puppeteer.executablePath());
-  console.log("Using Chromium Path:", await chromium.executablePath());
+  // console.log("Using Chromium Path:", await chromium.executablePath());
   
+  // Production Mode ✅
   const browser = await puppeteer.launch({
     args: chromium.args,
     executablePath: await chromium.executablePath(),
     headless: true,
   });
 
-
+  // Development mode ✔️
   // const browser = await puppeteer.launch({
   //   headless: true,
   //   args: [
   //     "--no-sandbox", 
   //     "--disable-setuid-sandbox"
   //   ],
-  //   // executablePath: "/home/sbx_user1051/.cache/puppeteer/chrome/linux-133.0.6943.98/chrome-linux64/chrome",
-  //   executablePath: puppeteer.executablePath()
   // });
   const page = await browser.newPage();
   await page.goto(invoiceUrl, { waitUntil: "networkidle0" });

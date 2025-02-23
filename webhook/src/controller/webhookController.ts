@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import generateInvoiceImage from "../services/imageGen.js";
 import FormData from "form-data";
 import { Readable } from "stream";
+import { defaultMessage } from "../utils/defaultMessages.js";
 
 dotenv.config();
 
@@ -14,6 +15,17 @@ const webhookController = async (req: any, res: any) => {
     console.log("Full data received : ", req.body);
     const message = req.body?.message?.text;
     const chatid = req.body?.message?.chat?.id;
+
+    // Send Default Messages
+    if(message === "/start"){
+      await sendMessage(chatid, defaultMessage["/start"]);
+      return res.sendStatus(200);
+    }
+    // Send Default Messages
+    else if(message === "/help"){
+      await sendMessage(chatid, "Still help commands are not added...");
+      return res.sendStatus(200);
+    }
 
     // 1. Extract data ( Data formation state)
     const extractedData = await extractData(message);
