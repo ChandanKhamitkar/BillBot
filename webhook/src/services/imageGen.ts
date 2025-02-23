@@ -1,4 +1,6 @@
 import puppeteer from "puppeteer";
+import dotenv from "dotenv";
+dotenv.config();
 
 export default async function generateInvoiceImage(invoiceUrl: string) {
   
@@ -8,7 +10,7 @@ export default async function generateInvoiceImage(invoiceUrl: string) {
       "--no-sandbox", 
       "--disable-setuid-sandbox"
     ],
-    executablePath: process.env.CHROME_EXECUTABLE_PATH || "/tmp/puppeteer-cache/chrome",
+    executablePath: "/tmp/puppeteer-cache/chrome/linux-133.0.6943.98/chrome-linux64/chrome",
   });
   console.log("Chromium path:", await puppeteer.executablePath());
   const page = await browser.newPage();

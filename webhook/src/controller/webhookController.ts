@@ -27,7 +27,7 @@ const webhookController = async (req: any, res: any) => {
     const imageBuffer = await generateInvoiceImage(invoiceUrl);
     if (!imageBuffer)
       return sendError(res, chatid, "Error generating invoice image.");
-    console.log("Image buffer : ", imageBuffer);
+    // console.log("Image buffer : ", imageBuffer);
 
     // 3. Send Invoice image
     const imageSent = await sendInvoiceToTelegram(chatid, imageBuffer);
