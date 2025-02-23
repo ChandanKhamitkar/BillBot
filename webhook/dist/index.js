@@ -14,6 +14,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
+app.use(express.json());
 app.use(cors({
     origin: "*",
     methods: ["GET", "POST"],
@@ -43,6 +44,10 @@ app.post("/webhook", (req, res) => __awaiter(void 0, void 0, void 0, function* (
         console.log("Error : ", error);
     }
 }));
+// Default GET route
+app.get("/", (req, res) => {
+    res.send("Webhook BillBot is running, do not worry I'll handle the server, you go code...🧑‍💻");
+});
 app.listen(port, () => {
     console.log("Webhook BillBot is running...");
 });

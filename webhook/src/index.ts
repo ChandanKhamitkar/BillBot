@@ -7,6 +7,7 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+app.use(express.json());
 app.use(
   cors({
     origin: "*",
@@ -18,6 +19,7 @@ const TELEGRAM_API = `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}`
 
 app.post("/webhook", async (req, res) => {
   try {
+    console.log('Full data received : ', req.body);
     const message = req.body?.message?.text || "";
     const chatid = req.body?.message?.chat?.id || "";
 
