@@ -9,21 +9,34 @@ const TELEGRAM_API = `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}`
 const webhookController = async (req: any, res: any) => {
   try {
     console.log("Full data received : ", req.body);
-    const message = req.body?.message?.text || "";
-    const chatid = req.body?.message?.chat?.id || "";
+    const message = req.body?.message?.text;
+    const chatid = req.body?.message?.chat?.id;
 
     try {
-      await axios.post(`${TELEGRAM_API}/sendMessage`, {
-        chat_id: chatid,
-        text: message,
-      });
-      res.sendStatus(200);
+      const extract = await axios.post(
+        "https://bill-bot-genai.vercel.app/extractData", message
+      );
+
+      try {
+        await axios.post(`${TELEGRAM_API}/sendMessage`, {
+          chat_id: chatid,
+          text: extract.data,
+        });
+
+        res.sendStatus(200);
+      } catch (error) {
+
+        console.log("Error : ", error);
+        res.json({ error: "Error in sending message to user" });
+      }
     } catch (error) {
-      console.log("Error : ", error);
-      res.json({ error: "Error in sending message to user" });
+
+      res.status(500).json({ error: "Extraction failed." });
+      console.error("Extraction failed : ", error);
     }
   } catch (error) {
-    res.sendStatus(400);
+
+    res.sendStatus(500);
     console.log("Error : ", error);
   }
 };
