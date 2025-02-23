@@ -1,0 +1,23 @@
+{
+  "name": "billbot-genai",
+  "version": "1.0.0",
+  "description": "A generative AI agent, that takes user input and extracts the data that needs to display in invoice in a proper format.",
+  "license": "ISC",
+  "author": "Chandan Khamitkar",
+  "type": "module",
+  "main": "node index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "tsc -b && node dist/index.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.22.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0"
+  }
+}
