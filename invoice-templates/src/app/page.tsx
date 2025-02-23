@@ -1,6 +1,6 @@
 'use client';
+import NB001 from "@/components/NB001";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -14,37 +14,31 @@ export default function Home() {
     }
 
     const data = JSON.parse(decodeURIComponent(rawData));
+    // const data = {
+    //   name: "Chandan",
+    //   phone: "13425643213",
+    //   items: [
+    //     {
+    //       itemName: "Face wash", quantity: "3", price: "300",
+    //     },
+    //     {
+    //       itemName: "Face wash", quantity: "3", price: "300",
+    //     },
+    //     {
+    //       itemName: "Face wash", quantity: "3", price: "300",
+    //     },
+    //   ],
+    //   total: "6789",
+    //   shipping: "6789",
+    //   grandTotal: "6789",
+    // };
 
     if (!data.items || !Array.isArray(data.items)) {
       return <p>Error: Invalid data format</p>;
     }
 
     return (
-
-      <div style={{ padding: "20px", fontFamily: "Arial" }} className="bg-blue-300 text-black">
-        <h2>Invoice for {data.name}</h2>
-        <table border={1} width="100%">
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th>Qty</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.items.map((item: any, index: any) => (
-              <tr key={index}>
-                <td>{item.itemName}</td>
-                <td>{item.quantity}</td>
-                <td>₹{item.price}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <h3>Total: ₹{data.total}</h3>
-        <h3>Shipping: ₹{data.shipping}</h3>
-        <h3>Grand Total: ₹{data.grandTotal}</h3>
-      </div>
+      <NB001 name={data.name} phone={data.phone} items={data.items} total={data.total} shipping={data.shipping} grandTotal={data.grandTotal} />
     );
   } catch (error) {
     console.error("Error parsing data:", error);
