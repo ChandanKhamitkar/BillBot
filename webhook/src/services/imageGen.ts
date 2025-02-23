@@ -6,17 +6,11 @@ export default async function generateInvoiceImage(invoiceUrl: string) {
     headless: true,
     args: [
       "--no-sandbox", 
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
-      "--disable-accelerated-2d-canvas",
-      "--no-first-run",
-      "--no-zygote",
-      "--single-process",
-      "--disable-gpu",
+      "--disable-setuid-sandbox"
     ],
-    executablePath: process.env.CHROME_EXECUTABLE_PATH || "/usr/bin/chromium",
+    executablePath: process.env.CHROME_EXECUTABLE_PATH || "/tmp/puppeteer-cache/chrome",
   });
-
+  console.log("Chromium path:", await puppeteer.executablePath());
   const page = await browser.newPage();
   await page.goto(invoiceUrl, { waitUntil: "networkidle0" });
 
