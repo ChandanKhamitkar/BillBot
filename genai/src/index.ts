@@ -9,6 +9,7 @@ const app = express();
 const port = process.env.PORT || 3002;
 app.use(express.json());
 app.use(express.text());
+app.use(express.urlencoded({extended: true}));
 app.use(
   cors({
     origin: "*",
@@ -26,7 +27,7 @@ const model = genAI.getGenerativeModel({
 
 app.post("/extractData", async (req, res) => {
   try {
-    const message = req.body;
+    const message = req.body.text;
     console.log("req.body = ", message);
     const result = await extractBillingData(message);
     res.status(200).json({ result });

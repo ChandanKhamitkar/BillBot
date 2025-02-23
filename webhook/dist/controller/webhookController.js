@@ -35,18 +35,22 @@ const webhookController = (req, res) => __awaiter(void 0, void 0, void 0, functi
         if (!imageSent)
             return sendError(res, chatid, "Error sending invoice.");
         // Send extracted text as confirmation message
-        yield sendMessage(chatid, extractedData);
-        res.sendStatus(200);
+        yield sendMessage(chatid, "👆 is your invoice");
+        return res.sendStatus(200);
     }
     catch (error) {
         console.log("Error : ", error);
-        res.sendStatus(500);
+        return res.sendStatus(500);
     }
 });
 // 1🔹 Extract data using GenAI API
 const extractData = (message) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const response = yield axios.post("https://bill-bot-genai.vercel.app/extractData", message);
+        const response = yield axios.post("http://localhost:3002/extractData", { text: JSON.stringify(message) });
+        // const response = await axios.post(
+        //   "https://bill-bot-genai.vercel.app/extractData",
+        //   message
+        // );
         return response.data.result;
     }
     catch (error) {
