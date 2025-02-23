@@ -8,11 +8,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import puppeteer from "puppeteer";
+// import chromium from "chrome-aws-lambda";
+import dotenv from "dotenv";
+import chromium from "@sparticuz/chromium";
+dotenv.config();
 export default function generateInvoiceImage(invoiceUrl) {
     return __awaiter(this, void 0, void 0, function* () {
+        // console.log("Chromium path:", await puppeteer.executablePath());
+        console.log("Using Chromium Path:", yield chromium.executablePath());
+        // const browser = await puppeteer.launch({
+        //   args: chromium.args,
+        //   // executablePath: await chromium.executablePath(),
+        //   headless: true,
+        // });
         const browser = yield puppeteer.launch({
             headless: true,
-            args: ["--no-sandbox", "--disable-setuid-sandbox"],
+            args: [
+                "--no-sandbox",
+                "--disable-setuid-sandbox"
+            ],
+            // executablePath: "/home/sbx_user1051/.cache/puppeteer/chrome/linux-133.0.6943.98/chrome-linux64/chrome",
+            // executablePath: puppeteer.executablePath()
         });
         const page = yield browser.newPage();
         yield page.goto(invoiceUrl, { waitUntil: "networkidle0" });

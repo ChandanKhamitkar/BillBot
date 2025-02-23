@@ -29,28 +29,28 @@ const webhookController = (req, res) => __awaiter(void 0, void 0, void 0, functi
         const imageBuffer = yield generateInvoiceImage(invoiceUrl);
         if (!imageBuffer)
             return sendError(res, chatid, "Error generating invoice image.");
-        console.log("Image buffer : ", imageBuffer);
+        // console.log("Image buffer : ", imageBuffer);
         // 3. Send Invoice image
         const imageSent = yield sendInvoiceToTelegram(chatid, imageBuffer);
         if (!imageSent)
             return sendError(res, chatid, "Error sending invoice.");
         // Send extracted text as confirmation message
-        yield sendMessage(chatid, "👆 is your invoice");
+        yield sendMessage(chatid, "Here is your invoice Generated...");
         return res.sendStatus(200);
     }
     catch (error) {
         console.log("Error : ", error);
-        return res.sendStatus(500);
+        return res.sendStatus(200);
     }
 });
 // 1🔹 Extract data using GenAI API
 const extractData = (message) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const response = yield axios.post("http://localhost:3002/extractData", { text: JSON.stringify(message) });
         // const response = await axios.post(
-        //   "https://bill-bot-genai.vercel.app/extractData",
-        //   message
+        //   "http://localhost:3002/extractData",
+        //   { text: JSON.stringify(message) }
         // );
+        const response = yield axios.post("https://bill-bot-genai.vercel.app/extractData", { text: JSON.stringify(message) });
         return response.data.result;
     }
     catch (error) {
@@ -95,6 +95,6 @@ const sendMessage = (chatId, text) => __awaiter(void 0, void 0, void 0, function
 const sendError = (res, chatId, errorMessage) => __awaiter(void 0, void 0, void 0, function* () {
     console.error(errorMessage);
     yield sendMessage(chatId, "Please try again!!");
-    res.status(500).json({ error: errorMessage });
+    res.status(200).json({ error: errorMessage });
 });
 export { webhookController };

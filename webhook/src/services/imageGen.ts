@@ -1,20 +1,20 @@
 import puppeteer from "puppeteer";
-import chromium from "chrome-aws-lambda";
+// import chromium from "chrome-aws-lambda";
 import dotenv from "dotenv";
+import chromium from "@sparticuz/chromium";
 dotenv.config();
 
 export default async function generateInvoiceImage(invoiceUrl: string) {
   
   // console.log("Chromium path:", await puppeteer.executablePath());
-  const executablePath = await chromium.executablePath; // ✅ Get serverless-compatible Chromium path
-  console.log("Using Chromium Path:", executablePath);
-
+  console.log("Using Chromium Path:", await chromium.executablePath());
   
   const browser = await puppeteer.launch({
-    headless: true,
     args: chromium.args,
-    executablePath
+    executablePath: await chromium.executablePath(),
+    headless: true,
   });
+
 
   // const browser = await puppeteer.launch({
   //   headless: true,
