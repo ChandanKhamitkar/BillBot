@@ -1,7 +1,5 @@
 import puppeteer from "puppeteer";
-import dotenv from "dotenv";
 import chromium from "@sparticuz/chromium";
-dotenv.config();
 
 export default async function generateInvoiceImage(invoiceUrl: string) {
   
