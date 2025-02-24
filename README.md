@@ -22,7 +22,8 @@
 <img src="./webhook/assets/Demo.png">
 
 # Demo Video
-<video src="./webhook/assets/Demo-video.mp4" height="500px">
+https://github.com/user-attachments/assets/004278d6-266a-48e1-abf8-ad5d4c62f1ab
+
 ---
 
 ## 📌 Features
