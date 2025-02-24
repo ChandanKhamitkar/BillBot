@@ -1,5 +1,4 @@
 import puppeteer from "puppeteer";
-// import chromium from "chrome-aws-lambda";
 import dotenv from "dotenv";
 import chromium from "@sparticuz/chromium";
 dotenv.config();
