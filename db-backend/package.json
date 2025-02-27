@@ -1,0 +1,24 @@
+{
+  "name": "db-backend",
+  "version": "1.0.0",
+  "description": "A Prisma+PostgreSQL individual Backend route for handling CRUD operations in DB",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "tsc -b && node dist/index.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.4.1",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "prisma": "^6.4.1"
+  }
+}
