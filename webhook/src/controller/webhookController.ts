@@ -19,7 +19,7 @@ const webhookController = async (req: any, res: any) => {
     //🔸 Send Default Messages 
     if(message === "/start"){
       await sendMessage(chatid, defaultMessage["/start"]);
-      await axios.post(`${process.env.DATABASE_URL}/createUser`, { chatId : chatid });
+      await axios.post(`${process.env.DATABASE_URL}/createUser`, { chatId : chatid.toString() })
       return res.sendStatus(200);
     }
     //🔸 Send Default Messages
