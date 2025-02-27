@@ -22,12 +22,12 @@ export const updateBusinessDetails = async (req: any, res: any) => {
     });
 
     return res
-      .send(200)
+      .status(200)
       .json({ success: true, message: "Business Details Updated Successfully" });
   } catch (error) {
     console.log("Error while updating Business Details: ", error);
     return res
-      .send(500)
+      .status(500)
       .json({ success: false, message: "Error while updating Business Details" });
   }
 };

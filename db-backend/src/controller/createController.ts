@@ -7,7 +7,7 @@ export const createUser = async (req: any, res: any) => {
     const { chatId } = await req.body;
     if (!chatId) {
       return res
-        .send(400)
+        .status(400)
         .json({
           success: false,
           message: "ChatId is mandatory to create user",
@@ -21,12 +21,12 @@ export const createUser = async (req: any, res: any) => {
     });
 
     return res
-      .send(200)
+      .status(200)
       .json({ success: true, message: "User Created Successfully" });
   } catch (error) {
     console.log("Error while Creating user: ", error);
     return res
-      .send(500)
+      .status(500)
       .json({ success: false, message: "Error while Creating user" });
   }
 };
