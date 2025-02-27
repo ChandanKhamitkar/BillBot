@@ -4,7 +4,16 @@ import { prisma } from "../lib/prisma.js";
 // Desc: Update user's Business Details ( such as : Business Name, Owner Name, email, address, gst, upiid)
 export const updateBusinessDetails = async (req: any, res: any) => {
   try {
-    const { chatId, email, businessName, ownerName, address, UPIID, QR, gstPercent } = await req.body;
+    let { chatId, email, businessName, ownerName, address, UPIID, gstPercent } = await req.body;
+
+    // typecast to avoid errors
+    chatId = chatId?.toString();
+    email = email?.toString();
+    businessName = businessName?.toString();
+    ownerName = ownerName?.toString();
+    address = address?.toString();
+    UPIID = UPIID?.toString();
+    gstPercent = gstPercent ? parseInt(gstPercent, 10) : 0;
 
     await prisma.user.update({
       where: {
@@ -16,7 +25,6 @@ export const updateBusinessDetails = async (req: any, res: any) => {
         ownerName,
         address,
         UPIID,
-        QR,
         gstPercent
       }
     });
