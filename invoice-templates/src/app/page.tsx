@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const searchParams = useSearchParams();
-  let chatId = searchParams.get('chatId');
+  const chatId = searchParams.get('chatId');
   let rawData = searchParams.get('data');
 
   const [businessDetails, setBusinessDetails] = useState<BusinessDetailsTypes>({});
