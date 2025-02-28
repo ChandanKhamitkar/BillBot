@@ -1,17 +1,9 @@
-import { useState, Key } from "react";
 import { DisplayDataTypes } from "@/types/data";
 
-export default function NB001(props : DisplayDataTypes) {
-  const [logo, setLogo] = useState("");
-  const [company, setCompany] = useState("");
-  const {
-    name,
-    phone,
-    items,
-    total,
-    shipping,
-    grandTotal,
-  } = props || {};
+export default function NB001(props: DisplayDataTypes) {
+  const { data, businessDetails } = props;
+  const { name = "", phone = "", items = [], total = "0", shipping = "0", grandTotal = "0" } = data || {};
+
 
   const currentDate = new Date().toLocaleDateString("en-US", {
     month: "long",
@@ -24,7 +16,7 @@ export default function NB001(props : DisplayDataTypes) {
       {/* main card */}
       <div className="bg-white  w-[999px] min-h-[1000px] py-16 px-14 relative">
         <img
-          src={logo ? `${logo}` : "/brandLogo.png"}
+          src={businessDetails.logo ? `${businessDetails.logo}` : "/brandLogo.png"}
           alt="Brand Logo"
           className="w-80 h-80 opacity-15 absolute inset-0 m-auto transform   -translate-y-1"
         />
@@ -33,11 +25,11 @@ export default function NB001(props : DisplayDataTypes) {
           <div className="w-full flex justify-between items-center mx-auto ">
             <div className="flex justify-center items-center gap-4 flex-row-reverse">
               <div className="text-right space-y-0">
-                <p className="font-bold tracking-wide">{company}</p>
+                <p className="font-bold tracking-wide">{businessDetails.businessName || "Your Business/Company name"}</p>
                 <p></p>
               </div>
               <img
-                src={logo ? `${logo}` : "/brandLogo.png"}
+                src={businessDetails.logo ? `${businessDetails.logo}` : "/brandLogo.png"}
                 alt="Brand Logo"
                 className="w-16 h-16"
               />
@@ -80,7 +72,7 @@ export default function NB001(props : DisplayDataTypes) {
           </thead>
           <tbody className="border-b-2 border-black ">
             {items &&
-              items.map((row:any, index: Key) => (
+              items.map((row: any, index: number) => (
                 <tr key={index}>
                   <td className="pb-2 px-2">{row.itemName}</td>
                   <td className="text-center">{row.quantity}</td>
@@ -96,20 +88,20 @@ export default function NB001(props : DisplayDataTypes) {
         <div className="float-right min-w-[20%] mt-6 space-y-4 mb-32  ">
           <p className="flex justify-between items-center">
             <span className="font-semibold">Subtotal</span>
-            <span>{grandTotal}/-</span>
+            <span>{total}/-</span>
           </p>
           <p className="flex justify-between items-center">
             <span className="font-semibold">GST</span>
-            <span>18/-</span>
+            <span>{businessDetails?.gstPercent ?? 18}%</span>
           </p>
           <p className="flex justify-between items-center">
             <span className="font-semibold text-sm">Shipping Charges</span>
-            <span>100/-</span>
+            <span>{shipping || 0}/-</span>
           </p>
           <div className="h-0.5 bg-black"></div>
           <p className="flex justify-between items-center font-bold text-xl">
             <span>Total</span>
-            <span>{grandTotal}/-</span>
+            <span>{Number(grandTotal) + Number(shipping)}/-</span>
           </p>
         </div>
 
@@ -118,19 +110,20 @@ export default function NB001(props : DisplayDataTypes) {
             <div>
               <p className="text-2xl font-mono mb-20">Thankyou!</p>
               <p className="uppercase font-semibold">payment information</p>
-              <p>Bank Name : Swapna Khamitkar</p>
-              <p>UPI ID: 19324709127@oksbi</p>
-              <p>Account Holder Name : Swapna Khamitkar</p>
-              <p>Account Number : 1234567890</p>
+              {/* <p>Bank Name : Swapna Khamitkar</p> */}
+              <div className="flex flex-col justify-start items start space-y-2">
+                <p>UPI ID: {businessDetails.UPIID || "Payment UPI ID"}</p>
+                <img src={businessDetails.logo ? businessDetails.logo : "/SampleQR.png"} alt="Payment QR code" className="h-52" />
+              </div>
+              {/* <p>Account Holder Name : Swapna Khamitkar</p>
+              <p>Account Number : 1234567890</p> */}
             </div>
             <div className="self-end">
-              <p className="font-serif text-xl">
-              Swapna Khamitkar
-              </p>
-              <p>khamitkar@gmail.com</p>
+              <p className="font-serif text-xl">{businessDetails?.ownerName || "Owner Name"}</p>
+
+              <p>{businessDetails.email || "Business Email"}</p>
               <p>
-                --, Ananthapur,{" "}
-                515004
+                {businessDetails.address || "Address"}
               </p>
             </div>
           </div>

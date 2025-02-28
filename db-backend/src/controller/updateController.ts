@@ -4,7 +4,8 @@ import { prisma } from "../lib/prisma.js";
 // Desc: Update user's Business Details ( such as : Business Name, Owner Name, email, address, gst, upiid)
 export const updateBusinessDetails = async (req: any, res: any) => {
   try {
-    let { chatId, email, businessName, ownerName, address, UPIID, gstPercent } = await req.body;
+    let { chatId, data } = req.body;
+    let { email, businessName, ownerName, address, UPIID, gstPercent } = data;
 
     // typecast to avoid errors
     chatId = chatId?.toString();
@@ -14,6 +15,12 @@ export const updateBusinessDetails = async (req: any, res: any) => {
     address = address?.toString();
     UPIID = UPIID?.toString();
     gstPercent = gstPercent ? parseInt(gstPercent, 10) : 0;
+
+    if (!chatId) {
+      return res
+        .status(400)
+        .json({ success: false, message: "chatId is required" });
+    }
 
     await prisma.user.update({
       where: {
@@ -25,19 +32,23 @@ export const updateBusinessDetails = async (req: any, res: any) => {
         ownerName,
         address,
         UPIID,
-        gstPercent
-      }
+        gstPercent,
+      },
     });
 
     return res
       .status(200)
-      .json({ success: true, message: "Business Details Updated Successfully" });
+      .json({
+        success: true,
+        message: "Business Details Updated Successfully",
+      });
   } catch (error) {
     console.log("Error while updating Business Details: ", error);
     return res
       .status(500)
-      .json({ success: false, message: "Error while updating Business Details" });
+      .json({
+        success: false,
+        message: "Error while updating Business Details",
+      });
   }
 };
-
-

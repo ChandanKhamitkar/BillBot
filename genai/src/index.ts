@@ -29,8 +29,9 @@ const model = genAI.getGenerativeModel({
 app.post("/verifyMsg", async (req, res) => {
   try {
     const message = req.body.text;
+    const chatId = req.body.chatId;
     console.log("req.body = ", message);
-    const result = await verifyMessageType(message);
+    const result = await verifyMessageType(message, chatId);
     res.status(200).json({ result });
   } catch (error) {
     console.error("Error in Verifying Message type : ", error);
@@ -40,7 +41,7 @@ app.post("/verifyMsg", async (req, res) => {
   }
 });
 
-const verifyMessageType = async (message: any) => {
+const verifyMessageType = async (message: any, chatId : string) => {
   const prompt = `Here is the message : ${message}, as per my application requirements there are only two valid message types:
   1. Customer Billing Details
     - Customer Name
@@ -123,7 +124,7 @@ const verifyMessageType = async (message: any) => {
       case "business":
         await axios.post(
           `${process.env.DATABASE_URL}/updateBusinessDetails`,
-          parsedData
+          {data: parsedData, chatId}
         );
         return { type: "notify", message: "Data Stored Successfully ✅" };
 

@@ -29,12 +29,13 @@ const webhookController = async (req: any, res: any) => {
     }
 
     // 1. Verify and Extract data ( Data formation state )
-    const verifyExtractData = await verifyAndExtract(message);
+    const verifyExtractData = await verifyAndExtract(message, chatid.toString());
+    console.log('after verifaction response  = ', verifyExtractData, typeof(verifyExtractData));
     if (!verifyExtractData || verifyExtractData.type === "error" || verifyExtractData.type === "notify") return sendError(res, chatid, verifyExtractData.message || "Please try again!");
 
     if(verifyExtractData.type === "extraction"){
         // 2. Generate Invoice image
-        const invoiceUrl = `https://bill-bot-invoice-templates.vercel.app/?data=${encodeURIComponent(
+        const invoiceUrl = `https://bill-bot-invoice-templates.vercel.app/?chatId=${chatid.toString()}&data=${encodeURIComponent(
           JSON.stringify(verifyExtractData?.data)
         )}`;
     
@@ -57,15 +58,11 @@ const webhookController = async (req: any, res: any) => {
 };
 
 // 1🔹 Verify and Extract data using GenAI API
-const verifyAndExtract = async (message: string) => {
-  try {
-    // const response = await axios.post(
-    //   "http://localhost:3002/verifyMsg",
-    //   { text: JSON.stringify(message) }
-    // );
+const verifyAndExtract = async (message: string, chatId: string) => {
+  try {   
     const response = await axios.post(
       "https://bill-bot-genai.vercel.app/verifyMsg",
-      { text: JSON.stringify(message) }
+      { text: JSON.stringify(message), chatId: chatId }
     );
     return response.data.result;
   } catch (error) {

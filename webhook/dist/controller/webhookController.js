@@ -21,32 +21,38 @@ const webhookController = (req, res) => __awaiter(void 0, void 0, void 0, functi
         console.log("Full data received : ", req.body);
         const message = (_b = (_a = req.body) === null || _a === void 0 ? void 0 : _a.message) === null || _b === void 0 ? void 0 : _b.text;
         const chatid = (_e = (_d = (_c = req.body) === null || _c === void 0 ? void 0 : _c.message) === null || _d === void 0 ? void 0 : _d.chat) === null || _e === void 0 ? void 0 : _e.id;
-        // Send Default Messages
+        //🔸 Send Default Messages 
         if (message === "/start") {
             yield sendMessage(chatid, defaultMessage["/start"]);
+            yield axios.post(`${process.env.DATABASE_URL}/createUser`, { chatId: chatid.toString() });
             return res.sendStatus(200);
         }
-        // Send Default Messages
+        //🔸 Send Default Messages
         else if (message === "/help") {
-            yield sendMessage(chatid, "Still help commands are not added...");
+            yield sendMessage(chatid, "Help commands yet to add");
             return res.sendStatus(200);
         }
-        // 1. Extract data ( Data formation state)
-        const extractedData = yield extractData(message);
-        if (!extractedData)
-            return sendError(res, chatid, "Extraction failed.");
-        // 2. Generate Invoice image
-        const invoiceUrl = `https://bill-bot-invoice-templates.vercel.app/?data=${encodeURIComponent(JSON.stringify(extractedData))}`;
-        const imageBuffer = yield generateInvoiceImage(invoiceUrl);
-        if (!imageBuffer)
-            return sendError(res, chatid, "Error generating invoice image.");
-        // console.log("Image buffer : ", imageBuffer);
-        // 3. Send Invoice image
-        const imageSent = yield sendInvoiceToTelegram(chatid, imageBuffer);
-        if (!imageSent)
-            return sendError(res, chatid, "Error sending invoice.");
-        // Send extracted text as confirmation message
-        yield sendMessage(chatid, "Here is your invoice Generated...");
+        // 1. Verify and Extract data ( Data formation state )
+        const verifyExtractData = yield verifyAndExtract(message, chatid.toString());
+        console.log('after verifaction response  = ', verifyExtractData, typeof (verifyExtractData));
+        if (!verifyExtractData || verifyExtractData.type === "error" || verifyExtractData.type === "notify")
+            return sendError(res, chatid, verifyExtractData.message || "Please try again!");
+        if (verifyExtractData.type === "extraction") {
+            // 2. Generate Invoice image
+            // const invoiceUrl = `https://bill-bot-invoice-templates.vercel.app/?chatId=${chatid.toString()}&data=${encodeURIComponent(
+            //   JSON.stringify(verifyExtractData?.data)
+            // )}`;
+            const invoiceUrl = `http://localhost:3000/?chatId=${chatid.toString()}&data=${encodeURIComponent(JSON.stringify(verifyExtractData === null || verifyExtractData === void 0 ? void 0 : verifyExtractData.data))}`;
+            const imageBuffer = yield generateInvoiceImage(invoiceUrl);
+            if (!imageBuffer)
+                return sendError(res, chatid, "Error generating invoice image.");
+            // 3. Send Invoice image
+            const imageSent = yield sendInvoiceToTelegram(chatid, imageBuffer);
+            if (!imageSent)
+                return sendError(res, chatid, "Error sending invoice.");
+            // Send extracted text as confirmation message
+            yield sendMessage(chatid, "Here is your invoice Generated...");
+        }
         return res.sendStatus(200);
     }
     catch (error) {
@@ -54,18 +60,19 @@ const webhookController = (req, res) => __awaiter(void 0, void 0, void 0, functi
         return res.sendStatus(200);
     }
 });
-// 1🔹 Extract data using GenAI API
-const extractData = (message) => __awaiter(void 0, void 0, void 0, function* () {
+// 1🔹 Verify and Extract data using GenAI API
+const verifyAndExtract = (message, chatId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const response = yield axios.post("http://localhost:3002/verifyMsg", { text: JSON.stringify(message), chatId: chatId });
+        console.log("response from genai = ", response.data);
         // const response = await axios.post(
-        //   "http://localhost:3002/extractData",
-        //   { text: JSON.stringify(message) }
+        //   "https://bill-bot-genai.vercel.app/verifyMsg",
+        //   { text: JSON.stringify(message), chatId: chatId }
         // );
-        const response = yield axios.post("https://bill-bot-genai.vercel.app/extractData", { text: JSON.stringify(message) });
         return response.data.result;
     }
     catch (error) {
-        console.error("Extraction Error:", error);
+        console.error("Verification and Extraction Error:", error);
         return null;
     }
 });
@@ -105,7 +112,7 @@ const sendMessage = (chatId, text) => __awaiter(void 0, void 0, void 0, function
 // 🔹 Handle Errors & Send Default Message
 const sendError = (res, chatId, errorMessage) => __awaiter(void 0, void 0, void 0, function* () {
     console.error(errorMessage);
-    yield sendMessage(chatId, "Please try again!!");
+    yield sendMessage(chatId, errorMessage ? errorMessage : "Please try again!!");
     res.status(200).json({ error: errorMessage });
 });
 export { webhookController };
