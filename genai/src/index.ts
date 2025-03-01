@@ -41,7 +41,7 @@ app.post("/verifyMsg", async (req, res) => {
   }
 });
 
-const verifyMessageType = async (message: any, chatId : string) => {
+const verifyMessageType = async (message: any, chatId: string) => {
   const prompt = `Here is the message : ${message}, as per my application requirements there are only two valid message types:
   1. Customer Billing Details
     - Customer Name
@@ -119,17 +119,26 @@ const verifyMessageType = async (message: any, chatId : string) => {
     }
     switch (parsedData.type) {
       case "customer":
-        return { type: "extraction", data: parsedData, message : "Here is your generated Invoice" };
+        return {
+          type: "extraction",
+          data: parsedData,
+          message: "Here is your generated Invoice",
+        };
 
       case "business":
-        await axios.post(
-          `${process.env.DATABASE_URL}/updateBusinessDetails`,
-          {data: parsedData, chatId}
-        );
+        await axios.post(`${process.env.DATABASE_URL}/updateBusinessDetails`, {
+          data: parsedData,
+          chatId,
+        });
         return { type: "notify", message: "Data Stored Successfully ✅" };
 
       default:
-        return { type: "notify", message: "Message type is not accepted...!!" };
+        return {
+          type: "notify",
+          message: `🚫 Invalid message format!\n\nWe accept only two types of messages:\n
+                    1️⃣ *Customer Billing Details*\n*Example:*\nJohn Doe, 9876543210\nItems: Apple-2-50, Orange-1-30\nShipping: 20\n
+                    2️⃣ *Business Details*\n*Example:*\nBusiness: ABC Store\nOwner: John Doe\nEmail: abc@email.com\nAddress: XYZ Street\nGST: 18%\nUPI: abc@upi\n\nPlease follow one of these formats and try again. ✅`,
+        };
     }
   } catch (error) {
     console.error("Error extracting data: ", error);
