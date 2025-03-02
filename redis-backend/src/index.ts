@@ -73,7 +73,7 @@ app.get("/getBusinessDetails", async (req: any, res: any) => {
 
     let result = await redis.get(chatId as string);
     if (result) {
-      result = JSON.parse(result as string);
+      result = typeof result === "string" ? JSON.parse(result) : result;
     } else {
       try {
         const dbResult = await axios.post(
