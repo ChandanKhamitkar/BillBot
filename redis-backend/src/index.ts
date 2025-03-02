@@ -30,6 +30,13 @@ const setBDetailFun = async (chatId: string, data: any) => {
   await redis.set(chatId, JSON.stringify(data), { ex: expiry });
 };
 
+// Default GET route
+app.get("/", (req, res) => {
+  res.send(
+    "Redis for BillBot is Running"
+  );
+});
+
 // SET Business Details
 app.post("/setBusinessDetails", async (req: any, res: any) => {
   try {
