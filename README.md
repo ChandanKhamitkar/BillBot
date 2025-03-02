@@ -3,16 +3,18 @@
 🚀 BillBot is an AI-powered Telegram bot that extracts structured data from text messages, generates professional invoices using Next.js, and delivers them as images via a webhook. It leverages GenAI for data extraction, Puppeteer for rendering, and is optimized for Vercel deployment.
 
 ## 🛠️ **Tech Stack**
+[![My Skills](https://skillicons.dev/icons?i=nextjs,redis,prisma,postgresql,express,nodejs,ts,tailwindcss,bots,vercel&perline=5)](https://skillicons.dev)
 
-| Technology                      | Purpose                                                    |
-| ------------------------------- | ---------------------------------------------------------- |
-| Node.js & Express               | Backend for handling Telegram webhooks                     |
-| Puppeteer + @sparticuz/chromium | Generates invoice images using headless Chromium           |
-| GenAI ( Google's Gemini )       | Extracts structured data from user messages                |
-| Next.js                         | Renders the invoice dynamically                            |
-| Telegram Bot API                | Receives & Sends messages from users                       |
-| Vercel                          | Deployment for both webhook, invoice rendering and Next.js |
-| TypeScript                      | Ensure Typesafe                                            |
+| Technology                      | Purpose                                                     |
+| ------------------------------- | ----------------------------------------------------------  |
+| Node.js & Express               | Backend for handling Telegram webhooks                      |
+| Puppeteer + @sparticuz/chromium | Generates invoice images using headless Chromium            |
+| GenAI ( Google's Gemini )       | Extracts structured data from user messages                 |
+| Redis       | Caching of Business Details (To avoid repeated DB requests) |
+| Next.js                         | Renders the invoice dynamically                             |
+| Telegram Bot API                | Receives & Sends messages from users                        |
+| Vercel                          | Deployment for both webhook, invoice rendering and Next.js  |
+| TypeScript                      | Ensure Typesafe                                             |
 
 ---
 
