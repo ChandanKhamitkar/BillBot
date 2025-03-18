@@ -55,7 +55,7 @@ export default function Hero() {
                     {/* left message box */}
                     {/* <img src="/msg-left-blue.svg" alt="Left message box" className="absolute left-[200px] top-[80%] z-10" /> */}
                     <img
-                        src="/phone.png"
+                        src="/Phone.png"
                         alt="Mobile phone mockup"
                         className="w-[280px] absolute bottom-0 transform translate-y-[80%] rotate-12"
                     />

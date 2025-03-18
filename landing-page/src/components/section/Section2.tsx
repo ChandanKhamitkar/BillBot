@@ -26,7 +26,7 @@ export default function Section2() {
                 </div>
 
                 {/* Golden Diamond on top-right */}
-                <img src="/Golden-Diamond.svg" alt="Golden Diamond" className="absolute top-6 right-6" />
+                <img src="/Golden-diamond.svg" alt="Golden Diamond" className="absolute top-6 right-6" />
 
                 {/* Download Icon */}
                 <img src="/download-icon.svg" alt="Cloud Download Arrow icon" className="absolute bottom-16 left-1/2 transform -translate-x-1/2 floating" />
