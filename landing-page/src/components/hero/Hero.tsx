@@ -20,6 +20,7 @@ export default function Hero() {
     const bgRef = useRef(null);
     const leftMsgRef = useRef(null);
     const rightMsgRef = useRef(null);
+    const startBtnPressRef = useRef(null);
 
     useEffect(() => {
         if (!textRef.current || !phoneRef.current || !subtextRef.current) alert("there is no main text or phone ref or subtext");
@@ -111,6 +112,47 @@ export default function Hero() {
             }
         });
 
+        // Start button press
+        gsap.to(startBtnPressRef.current, {
+            opacity: 1,
+            scale: 1,
+            duration: 1.5,
+            zIndex: 30,
+            ease: "power1.out",
+            scrollTrigger: {
+                trigger: phoneRef.current,
+                start: "top 5%",
+                end: "top 0%",
+                scrub: 1,
+                toggleActions: "play reverse play reverse",
+            },
+            onStart: () => {
+                gsap.to(phoneRef.current, {
+                    scale: 0.98,
+                    duration: 0.5,
+                    yoyo: true, // scaling back to original size
+                    repeat: 1,
+                    ease: "power1.inOut"
+                });
+            }
+        });
+
+        // Start button press disspaear after scale
+        gsap.to(startBtnPressRef.current, {
+            opacity: 0,
+            scale: 1,
+            duration: 1.5,
+            zIndex: 30,
+            ease: "power1.out",
+            scrollTrigger: {
+                trigger: phoneRef.current,
+                start: "top -50%",
+                // end: "top -40%",
+                scrub: 1,
+                toggleActions: "play reverse play reverse",
+            }
+        });
+
         return () => {
             ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
         };
@@ -184,6 +226,7 @@ export default function Hero() {
                             alt="Mobile phone mockup"
                             className="w-[280px] relative z-10"
                         />
+                        <div ref={startBtnPressRef} className="absolute bottom-8 transform left-1/2 -translate-x-1/2 rounded-xl border-4 border-[#5404FF]/80 w-[220px] h-[50px] z-0 scale-0 opacity-0"></div>
                         <img ref={leftMsgRef} src="/msg-left-blue.svg" alt="Left message box" className="absolute bottom-[6%] transform -translate-y-[50%] left-0 -translate-x-1/3 size-32 z-20 opacity-0 scale-0" />
                         <img ref={rightMsgRef} src="/msg-right-blue.svg" alt="Right message box" className="absolute bottom-[16%] transform -translate-y-[50%] right-0 translate-x-1/3 size-28 z-20 opacity-0 scale-0" />
                     </div>
