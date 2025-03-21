@@ -18,6 +18,8 @@ export default function Hero() {
     const textRef = useRef(null);
     const subtextRef = useRef(null);
     const bgRef = useRef(null);
+    const leftMsgRef = useRef(null);
+    const rightMsgRef = useRef(null);
 
     useEffect(() => {
         if (!textRef.current || !phoneRef.current || !subtextRef.current) alert("there is no main text or phone ref or subtext");
@@ -33,6 +35,7 @@ export default function Hero() {
                 scrub: 1
             }
         });
+
         // Main Hero Text
         gsap.to(textRef.current, {
             opacity: 0,
@@ -41,8 +44,7 @@ export default function Hero() {
             ease: "power1.out",
             scrollTrigger: {
                 trigger: phoneRef.current,
-                start: "top 50%",
-                markers: true,
+                start: "top 30%",
                 toggleActions: "play reverse play reverse",
             }
         });
@@ -78,6 +80,36 @@ export default function Hero() {
             }
         });
 
+        // left msg box on phone
+        gsap.to(leftMsgRef.current, {
+            opacity: 1,
+            scale: 1,
+            duration: .5,
+            ease: "power1.out",
+            scrollTrigger: {
+                trigger: phoneRef.current,
+                start: "top 20%",
+                end: "top 0%",
+                scrub: 1,
+                markers: true,
+                toggleActions: "play reverse play reverse",
+            }
+        });
+
+        // right msg box on phone
+        gsap.to(rightMsgRef.current, {
+            opacity: 1,
+            scale: 1,
+            duration: .5,
+            ease: "power1.out",
+            scrollTrigger: {
+                trigger: phoneRef.current,
+                start: "top 30%",
+                end: "top 10%",
+                scrub: 1,
+                toggleActions: "play reverse play reverse",
+            }
+        });
 
         return () => {
             ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
@@ -144,15 +176,18 @@ export default function Hero() {
                 {/* Mobile Phone Mockup */}
                 <div className="w-full flex justify-center mt-16 relative">
                     {/* left message box */}
-                    {/* <img src="/msg-left-blue.svg" alt="Left message box" className="absolute left-[200px] top-[80%] z-10" /> */}
-                    <img
+                    <div
                         ref={phoneRef}
-                        src="/Phone.png"
-                        alt="Mobile phone mockup"
-                        className="w-[280px] absolute bottom-0 transform translate-y-[80%] rotate-12"
-                    />
-                    
-                    {/* <img src="/msg-right-blue.svg" alt="Right message box" className="absolute right-[200px] top-0 z-10" /> */}
+                        className="w-fit h-fit absolute bottom-0 transform translate-y-[80%] rotate-12">
+                        <img
+                            src="/Phone.png"
+                            alt="Mobile phone mockup"
+                            className="w-[280px] relative z-10"
+                        />
+                        <img ref={leftMsgRef} src="/msg-left-blue.svg" alt="Left message box" className="absolute bottom-[6%] transform -translate-y-[50%] left-0 -translate-x-1/3 size-32 z-20 opacity-0 scale-0" />
+                        <img ref={rightMsgRef} src="/msg-right-blue.svg" alt="Right message box" className="absolute bottom-[16%] transform -translate-y-[50%] right-0 translate-x-1/3 size-28 z-20 opacity-0 scale-0" />
+                    </div>
+
                 </div>
             </div>
 
