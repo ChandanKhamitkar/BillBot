@@ -11,6 +11,8 @@
   "dependencies": {
     "@next/font": "^14.2.15",
     "framer-motion": "^12.5.0",
+    "gsap": "^3.12.7",
+    "lenis": "^1.2.3",
     "next": "15.2.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

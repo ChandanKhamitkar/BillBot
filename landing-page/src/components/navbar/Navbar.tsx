@@ -14,7 +14,7 @@ export default function Navbar({
     trynow = true,
 }: NavbarProps) {
     return (
-        <nav className="fixed top-0 w-full h-fit flex justify-between pt-6 px-12 z-100">
+        <nav className="fixed top-0 z-[100] w-full h-fit flex justify-between pt-6 px-12">
             <div className="w-fit flex items-center justify-start space-x-3 text-white">
                 {
                     logo && <img src="/logo.png" alt="BillBot logo" className="w-8 h-8 " />
