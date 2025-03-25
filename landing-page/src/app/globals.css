@@ -31,3 +31,29 @@ body {
 .floating {
   animation: floating 2s ease-in-out infinite;
 }
+
+@keyframes rotate-clockwise {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate-counterclockwise {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(-360deg);
+  }
+}
+
+.animate-rotate-clockwise {
+  animation: rotate-clockwise 10s linear infinite;
+}
+
+.animate-rotate-counterclockwise {
+  animation: rotate-counterclockwise 10s linear infinite;
+}

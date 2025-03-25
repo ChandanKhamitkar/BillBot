@@ -14,24 +14,10 @@ export default function Home() {
 
         {/* <div className="h-[70%]"></div> */}
         <Section1 />
-        {/* <div className="h-10"></div> */}
         <Section2 />
-        {/* <div className="h-10"></div> */}
         <Section3 />
-        {/* <div className="h-10"></div> */}
         <Footer />
       </ReactLenis>
     </>
-    // <div className="w-screen h-screen overflow-y-scroll">
-    //   <Hero/>
-    //   <div className="h-[70%]"></div>
-    //   <Section1/>
-    //   <div className="h-10"></div>
-    //   <Section2/>
-    //   <div className="h-10"></div>
-    //   <Section3/>
-    //   <div className="h-10"></div>
-    //   <Footer/>
-    // </div>
   );
 }

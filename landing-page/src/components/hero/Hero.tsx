@@ -6,46 +6,46 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Navbar from "../navbar/Navbar";
 import { youngserif, ibmplexmono600 } from "@/utils/fonts";
 import { LuSend } from "react-icons/lu";
-import { body } from "framer-motion/client";
+import Processing from "./Processing";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
 export default function Hero() {
-
     const phoneRef = useRef(null);
+    const phoneImgRef = useRef<HTMLImageElement | null>(null);
     const textRef = useRef(null);
     const subtextRef = useRef(null);
     const bgRef = useRef(null);
+    const heroSectionRef = useRef(null);
     const leftMsgRef = useRef(null);
     const rightMsgRef = useRef(null);
     const startBtnPressRef = useRef(null);
+    const processingRef = useRef(null);
+    const processingTxtReft = useRef<HTMLParagraphElement>(null);
 
     useEffect(() => {
         if (!textRef.current || !phoneRef.current || !subtextRef.current) alert("there is no main text or phone ref or subtext");
 
-
-        // Pin the background image
-        gsap.to(bgRef.current, {
-            scrollTrigger: {
-                trigger: ".heroSection",
-                start: "top top",
-                end: "+=1000px",
-                pin: true,
-                scrub: 1
-            }
+        // Pin the entire hero section during animations
+        ScrollTrigger.create({
+            trigger: ".heroSection",
+            start: "top top",
+            end: "+=1500px", // Extended pinning duration
+            pin: true,
+            pinSpacing: true,
         });
 
         // Main Hero Text
         gsap.to(textRef.current, {
             opacity: 0,
             filter: "blur(10px)",
-            duration: .5,
-            ease: "power1.out",
+            duration: 1, // Increased duration
+            ease: "power2.inOut", // Smoother ease
             scrollTrigger: {
                 trigger: phoneRef.current,
-                start: "top 30%",
+                start: "top 40%", // Adjusted trigger point
                 toggleActions: "play reverse play reverse",
             }
         });
@@ -54,29 +54,29 @@ export default function Hero() {
         gsap.to(subtextRef.current, {
             opacity: 0,
             filter: "blur(10px)",
-            duration: 1,
-            ease: "power1.out",
+            duration: 1.5, // Increased duration
+            ease: "power2.inOut", // Smoother ease
             scrollTrigger: {
                 trigger: phoneRef.current,
-                start: "top 50%",
+                start: "top 60%", // Adjusted trigger point
                 toggleActions: "play reverse play reverse",
             }
         });
 
         // Rotate and move phone to center
         gsap.to(phoneRef.current, {
-            rotate: "0", // Rotate to 0 degrees
-            x: "-50%", // Move to center horizontally
-            y: "-70%", // Move to center vertically
-            left: "50%", // Align to center of the screen
-            top: "50%", // Align to center of the screen
-            duration: 2.7,
-            ease: "power1.out",
+            rotate: "0",
+            x: "-50%",
+            y: "-70%",
+            left: "50%",
+            top: "50%",
+            duration: 8, // Slowed down rotation and movement
+            ease: "power2.inOut", // Smoother ease
             scrollTrigger: {
                 trigger: phoneRef.current,
                 start: "top 50%",
                 end: "top 30%",
-                scrub: 1, // Smooth scrolling effect
+                scrub: 2, // Increased scrub for smoother scrolling
                 toggleActions: "play reverse play reverse",
             }
         });
@@ -85,14 +85,13 @@ export default function Hero() {
         gsap.to(leftMsgRef.current, {
             opacity: 1,
             scale: 1,
-            duration: .5,
-            ease: "power1.out",
+            duration: 1, // Increased duration
+            ease: "back.out(1.7)", // Elastic ease for more natural feel
             scrollTrigger: {
                 trigger: phoneRef.current,
-                start: "top 20%",
-                end: "top 0%",
-                scrub: 1,
-                markers: true,
+                start: "top 25%", // Adjusted trigger point
+                end: "top 5%",
+                scrub: 1.5,
                 toggleActions: "play reverse play reverse",
             }
         });
@@ -101,55 +100,179 @@ export default function Hero() {
         gsap.to(rightMsgRef.current, {
             opacity: 1,
             scale: 1,
-            duration: .5,
-            ease: "power1.out",
+            duration: 1, // Increased duration
+            ease: "back.out(1.7)", // Elastic ease for more natural feel
             scrollTrigger: {
                 trigger: phoneRef.current,
-                start: "top 30%",
-                end: "top 10%",
-                scrub: 1,
+                start: "top 35%", // Adjusted trigger point
+                end: "top 15%",
+                scrub: 1.5,
                 toggleActions: "play reverse play reverse",
             }
         });
 
-        // Start button press
-        gsap.to(startBtnPressRef.current, {
-            opacity: 1,
-            scale: 1,
-            duration: 1.5,
-            zIndex: 30,
-            ease: "power1.out",
+        // Create a timeline for the button press and image change animations
+        const buttonPressTl = gsap.timeline({
             scrollTrigger: {
                 trigger: phoneRef.current,
-                start: "top 5%",
-                end: "top 0%",
-                scrub: 1,
-                toggleActions: "play reverse play reverse",
-            },
-            onStart: () => {
-                gsap.to(phoneRef.current, {
-                    scale: 0.98,
-                    duration: 0.5,
-                    yoyo: true, // scaling back to original size
-                    repeat: 1,
-                    ease: "power1.inOut"
-                });
+                start: "top 10%", // Adjusted trigger point
+                end: "top -10%",
+                scrub: 2, // Increased scrub for smoother transition
+                onEnter: () => {
+                    // Phone button press and scale effect
+                    gsap.to(phoneRef.current, {
+                        scale: 0.98,
+                        duration: 0.5, // Slightly longer duration
+                        yoyo: true,
+                        repeat: 1,
+                        ease: "power2.inOut"
+                    });
+                },
+                onLeaveBack: () => {
+                    // Revert to original image when scrolling back up
+                    if (phoneImgRef.current) {
+                        phoneImgRef.current.src = "/Phone.png";
+                    }
+                }
             }
         });
 
-        // Start button press disspaear after scale
-        gsap.to(startBtnPressRef.current, {
-            opacity: 0,
-            scale: 1,
-            duration: 1.5,
-            zIndex: 30,
-            ease: "power1.out",
+        // Add animations to the timeline with extended durations and smoother easing
+        buttonPressTl
+            .to(startBtnPressRef.current, {
+                opacity: 1,
+                scale: 1,
+                zIndex: 30,
+                duration: 2, // Extended duration
+                ease: "back.out(1.5)", // More elastic ease
+            })
+            // Fade out Phone.png and change to Phone-2.png
+            .to(phoneRef.current, {
+                opacity: 0,
+                duration: 2, // Extended duration
+                ease: "power2.inOut",
+                onComplete: () => {
+                    if (phoneImgRef.current) {
+                        phoneImgRef.current.src = "/Phone-2.png";
+                    }
+                },
+                onStart: () => {
+                    gsap.to(leftMsgRef.current, {
+                        opacity: 0,
+                        scale: 0,
+                        duration: 1.5,
+                        ease: "back.in(1.7)",
+                    })
+                    gsap.to(rightMsgRef.current, {
+                        opacity: 0,
+                        scale: 0,
+                        duration: 1.5,
+                        ease: "back.in(1.7)",
+                    })
+                }
+            })
+            // left & right msg box disapper
+            // phone-2 image fade in
+            .to(phoneRef.current, {
+                opacity: 1,
+                duration: 2, // Extended duration
+                ease: "power2.inOut",
+                onStart: () => {
+                    gsap.set(leftMsgRef.current, { display: "none" });
+                    gsap.set(rightMsgRef.current, { display: "none" });
+                },
+            })
+            // button press outline going back
+            .to(startBtnPressRef.current, {
+                opacity: 0,
+                zIndex: 30,
+                duration: 2, // Extended duration
+                ease: "power2.out",
+            })
+            // Fade out Phone-2.png and change to Phone-3.png
+            .to(phoneRef.current, {
+                opacity: 0,
+                duration: 1.5, // Slightly extended duration
+                ease: "power2.inOut",
+                onComplete: () => {
+                    if (phoneImgRef.current) {
+                        phoneImgRef.current.src = "/Phone-3.png";
+                    }
+                }
+            })
+            // phone-3 image fade in
+            .to(phoneRef.current, {
+                opacity: 1,
+                duration: 1.5, // Slightly extended duration
+                ease: "power2.inOut",
+            })
+            // Move phoneRef to the right
+            .to(phoneRef.current, {
+                x: "100%",
+                duration: 5, // Extended duration for smoother movement
+                ease: "power2.inOut",
+                onStart: () => {
+                    gsap.set(phoneRef.current, { scale: 1 });
+                },
+            })
+            // Fade out Phone-3.png and change to Phone-4.png
+            .to(phoneRef.current, {
+                opacity: 0,
+                duration: 1.5, // Slightly extended duration
+                ease: "power2.inOut",
+                onComplete: () => {
+                    if (phoneImgRef.current) {
+                        phoneImgRef.current.src = "/Phone-4.png";
+                    }
+                }
+            })
+            // phone-4 image fade in
+            .to(phoneRef.current, {
+                opacity: 1,
+                duration: 1.5, // Slightly extended duration
+                ease: "power2.inOut",
+                onComplete: () => {
+                    // Sequentially update the text content of the paragraph
+                    if (processingTxtReft.current) {
+                        gsap.delayedCall(0, () => {
+                            processingTxtReft.current!.textContent = "Extracting Invoice details from message...";
+                        });
+                        gsap.delayedCall(2, () => {
+                            processingTxtReft.current!.textContent = "Verifying valid message format";
+                        });
+                        gsap.delayedCall(4, () => {
+                            processingTxtReft.current!.textContent = "generating invoice";
+                        });
+                        gsap.delayedCall(6, () => {
+                            processingTxtReft.current!.textContent = "Done";
+                        });
+                    }
+                },
+            })
+
+        // Processing Component 
+        gsap.timeline({
             scrollTrigger: {
                 trigger: phoneRef.current,
-                start: "top -50%",
-                // end: "top -40%",
-                scrub: 1,
-                toggleActions: "play reverse play reverse",
+                start: "top -10%",
+                onEnter: () => {
+                    // Fade in Processing component when phone moves to right
+                    gsap.to(processingRef.current, {
+                        opacity: 1,
+                        x: "20%",
+                        duration: 1,
+                        ease: "power2.out"
+                    });
+                },
+                onLeaveBack: () => {
+                    // Fade out Processing component when scrolling back
+                    gsap.to(processingRef.current, {
+                        opacity: 0,
+                        x: "-100%",
+                        duration: 1,
+                        ease: "power2.in"
+                    });
+                }
             }
         });
 
@@ -159,13 +282,12 @@ export default function Hero() {
     }, []);
 
     return (
-        <div className="heroSection w-full h-screen bg-black/10 backdrop-blur-xs relative mb-72">
+        <div ref={heroSectionRef} className="heroSection w-full h-screen bg-black/10 backdrop-blur-xs relative mb-72">
             {/* Navbar */}
             <Navbar />
 
             {/* The purple circle + Noise + Star pattern */}
             <div ref={bgRef} className="backgroundImages absolute top-0 left-0 w-full h-screen z-0">
-
                 <img
                     src="/purple-glow.png"
                     className="absolute top-0 backdrop-blur-xs w-full h-screen z-0"
@@ -178,12 +300,10 @@ export default function Hero() {
                 />
             </div>
 
-
             {/* Hero text */}
             <div
                 className={`w-max h-screen mx-auto flex flex-col justify-center items-center space-y-6 text-white relative z-10 shadow-xl ${youngserif.className}`}
             >
-
                 {/* Main Title */}
                 <div
                     ref={textRef}
@@ -194,7 +314,7 @@ export default function Hero() {
                     <img
                         src="/thin-star.svg"
                         alt="Single star"
-                        className="absolute top-0 transform -translate-y-[80%] right-0 w-28 h-28  z-20"
+                        className="absolute top-0 transform -translate-y-[80%] right-0 w-28 h-28 z-20"
                     />
                 </div>
 
@@ -217,11 +337,11 @@ export default function Hero() {
 
                 {/* Mobile Phone Mockup */}
                 <div className="w-full flex justify-center mt-16 relative">
-                    {/* left message box */}
                     <div
                         ref={phoneRef}
                         className="w-fit h-fit absolute bottom-0 transform translate-y-[80%] rotate-12">
                         <img
+                            ref={phoneImgRef}
                             src="/Phone.png"
                             alt="Mobile phone mockup"
                             className="w-[280px] relative z-10"
@@ -230,16 +350,21 @@ export default function Hero() {
                         <img ref={leftMsgRef} src="/msg-left-blue.svg" alt="Left message box" className="absolute bottom-[6%] transform -translate-y-[50%] left-0 -translate-x-1/3 size-32 z-20 opacity-0 scale-0" />
                         <img ref={rightMsgRef} src="/msg-right-blue.svg" alt="Right message box" className="absolute bottom-[16%] transform -translate-y-[50%] right-0 translate-x-1/3 size-28 z-20 opacity-0 scale-0" />
                     </div>
-
                 </div>
+            </div>
+
+            {/* Processing Component */}
+            <div
+                ref={processingRef}
+                className="absolute top-[14%] left-[20%] transform z-40 opacity-0"
+            >
+                <Processing txtRef={processingTxtReft}/>
             </div>
 
 
             {/* 3d Gemini + Google icons */}
             <img src="/gemini.png" alt="Gemini logo" className="absolute bottom-0 left-10 w-40" />
             <img src="/google.png" alt="Google logo" className="absolute -bottom-12 right-10 w-40" />
-
-            {/* <img src="/PerspectiveGrid.svg" alt="Grids" className="abosolute bottom-0 w-full opacity-60" /> */}
         </div>
     );
 }
