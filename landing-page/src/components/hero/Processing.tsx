@@ -1,27 +1,44 @@
-import { RefObject } from "react";
-
-interface ProcessingRef {
-    txtRef: RefObject<HTMLParagraphElement | null>;
+import { RefObject} from "react";
+import { poppins500 } from "@/utils/fonts";
+interface ProcessingProps {
+    textRefs: RefObject<(HTMLParagraphElement | null)[]>;
+    processingRef: RefObject<HTMLDivElement | null>;
 }
 
-export default function Processing(props: ProcessingRef) {
+export default function Processing({ textRefs, processingRef }: ProcessingProps) {
+
     return (
         <div className="w-fit h-fit mx-auto">
             <div className="w-fit h-fit relative">
                 {/* Gemini image */}
                 <img src="/gemini-2.png" alt="Gemini Img" className="w-24 h-24 mx-auto" />
-               
+
                 {/* Top vertical line */}
                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full z-10">
                     <div className="w-px h-24 bg-[#696969] relative">
 
                         {/* Processing Text */}
-                        <p 
-                            ref={props.txtRef}
-                            className="absolute -bottom-1/2 left-1/2 transform translate-y-full -translate-x-1/2 max-w-[150px] min-w-[140px] text-center text-wrap text-neutral-500 text-xs font-semibold"
+                        <div
+                            ref={processingRef}
+                            className={`absolute w-[170px] h-[170px] flex flex-col gap-6 justify-center items-center text-center bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full rounded-full overflow-clip ${poppins500.className}`}
                         >
-                            
-                        </p>
+                            {["Extracting Invoice details from message...", "Verifying valid message format", "Generating invoice", "Done"].map(
+                                (text, index) => (
+                                    <p
+                                        key={index}
+                                        ref={(el) => {
+                                            if (textRefs.current) {
+                                                textRefs.current[index] = el;
+                                            }
+                                        }}
+                                        className="absolute w-[80%] text-wrap text-neutral-400 text-[8px] tracking-wider text-center"
+                                    >
+                                        {text}
+                                    </p>
+                                )
+                            )}
+                        </div>
+
 
                         {/* Level Circle Wrapper */}
                         <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-[233px] w-[300px] h-[300px] z-20">
@@ -52,16 +69,15 @@ export default function Processing(props: ProcessingRef) {
                                 />
                             </div>
                         </div>
-                        
+
                         {/* Bottom Line */}
                         <div className="w-px h-32 bg-[#696969] absolute bottom-1/2 transform translate-y-[267%]"></div>
 
                         {/* Check GIF */}
                         <img src="/check-animated.gif" alt="Check Animated Green GIF" className="min-w-[100px] absolute -bottom-1/2 left-1/2 transform -translate-x-1/2 translate-y-[285%]" />
-                        {/* <video src="/check-animated.mp4" autoPlay controls className="min-w-[100px] absolute -bottom-1/2 left-1/2 transform -translate-x-1/2 translate-y-[285%]" ></video> */}
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };

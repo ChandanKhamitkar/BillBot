@@ -22,8 +22,8 @@ export default function Hero() {
     const leftMsgRef = useRef(null);
     const rightMsgRef = useRef(null);
     const startBtnPressRef = useRef(null);
-    const processingRef = useRef(null);
-    const processingTxtReft = useRef<HTMLParagraphElement>(null);
+    const processingRef = useRef<HTMLDivElement>(null);
+    const textRefs = useRef<HTMLParagraphElement[]>([]);
 
     useEffect(() => {
         if (!textRef.current || !phoneRef.current || !subtextRef.current) alert("there is no main text or phone ref or subtext");
@@ -231,42 +231,94 @@ export default function Hero() {
                 opacity: 1,
                 duration: 1.5, // Slightly extended duration
                 ease: "power2.inOut",
-                onComplete: () => {
-                    // Sequentially update the text content of the paragraph
-                    if (processingTxtReft.current) {
-                        gsap.delayedCall(0, () => {
-                            processingTxtReft.current!.textContent = "Extracting Invoice details from message...";
-                        });
-                        gsap.delayedCall(2, () => {
-                            processingTxtReft.current!.textContent = "Verifying valid message format";
-                        });
-                        gsap.delayedCall(4, () => {
-                            processingTxtReft.current!.textContent = "generating invoice";
-                        });
-                        gsap.delayedCall(6, () => {
-                            processingTxtReft.current!.textContent = "Done";
-                        });
-                    }
-                },
             })
 
+        const processingElement = processingRef.current;
+        const phoneElement = phoneRef.current;
+        
         // Processing Component 
         gsap.timeline({
             scrollTrigger: {
-                trigger: phoneRef.current,
+                trigger: phoneElement,
                 start: "top -10%",
                 onEnter: () => {
                     // Fade in Processing component when phone moves to right
-                    gsap.to(processingRef.current, {
+                    gsap.to(processingElement, {
                         opacity: 1,
                         x: "20%",
                         duration: 1,
-                        ease: "power2.out"
+                        ease: "power2.out",
+                        onComplete: () => {
+                            // Sequential text animation for Processing Component
+                            if (textRefs.current.length > 0) {
+                                // Initial state for all texts
+                                textRefs.current.forEach((text, index) => {
+                                    gsap.set(text, {
+                                        opacity: index === 0 ? 1 : 0.5,
+                                        scale: index === 0 ? 1 : 0.8,
+                                        y: index === 0 ? 0 : 100,
+                                        fontWeight: index === 0 ? "bold" : "normal",
+                                        transformOrigin: "center center" // Ensure scaling happens from center
+                                    });
+                                });
+
+                                let currentIndex = 0;
+                                const totalTexts = textRefs.current.length;
+
+                                const animateTexts = () => {
+                                    // Move the current text up and reduce its opacity and scale
+                                    gsap.to(textRefs.current[currentIndex], {
+                                        opacity: 0.5,
+                                        scale: 0.8,
+                                        y: -50,
+                                        fontWeight: "normal",
+                                        duration: 0.8,
+                                        ease: "power2.inOut",
+                                    });
+
+                                    currentIndex = (currentIndex + 1) % totalTexts;
+
+                                    // Bring the next text to the center with improved centering
+                                    gsap.to(textRefs.current[currentIndex], {
+                                        opacity: 1,
+                                        scale: 1,
+                                        y: 0,
+                                        fontWeight: "bold",
+                                        duration: 0.8,
+                                        ease: "power2.inOut",
+                                        onComplete: () => {
+                                            if (currentIndex < totalTexts - 1) {
+                                                setTimeout(animateTexts, 2000);
+                                            }
+                                        },
+                                    });
+
+                                    // Reposition other texts more precisely
+                                    textRefs.current.forEach((text, index) => {
+                                        if (index !== currentIndex) {
+                                            const offset = index < currentIndex
+                                                ? -(Math.abs(index - currentIndex) * 50)
+                                                : (index - currentIndex) * 50;
+
+                                            gsap.to(text, {
+                                                y: offset,
+                                                opacity: 0.5,
+                                                scale: 0.8,
+                                                fontWeight: "normal",
+                                                duration: 0.8,
+                                                ease: "power2.inOut",
+                                            });
+                                        }
+                                    });
+                                };
+
+                                setTimeout(animateTexts, 2000);
+                            }
+                        }
                     });
                 },
                 onLeaveBack: () => {
-                    // Fade out Processing component when scrolling back
-                    gsap.to(processingRef.current, {
+                    gsap.to(processingElement, {
                         opacity: 0,
                         x: "-100%",
                         duration: 1,
@@ -358,7 +410,7 @@ export default function Hero() {
                 ref={processingRef}
                 className="absolute top-[14%] left-[20%] transform z-40 opacity-0"
             >
-                <Processing txtRef={processingTxtReft}/>
+                <Processing textRefs={textRefs} processingRef={processingRef} />
             </div>
 
 
