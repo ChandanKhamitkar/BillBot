@@ -1,11 +1,14 @@
-import { RefObject} from "react";
+import { RefObject } from "react";
 import { poppins500 } from "@/utils/fonts";
+import { FiCheckCircle } from "react-icons/fi";
 interface ProcessingProps {
     textRefs: RefObject<(HTMLParagraphElement | null)[]>;
     processingRef: RefObject<HTMLDivElement | null>;
+    processDoneBottomLineRef: RefObject<HTMLDivElement | null>;
+    processDoneCheckRef: RefObject<HTMLDivElement | null>;
 }
 
-export default function Processing({ textRefs, processingRef }: ProcessingProps) {
+export default function Processing({ textRefs, processingRef, processDoneBottomLineRef, processDoneCheckRef }: ProcessingProps) {
 
     return (
         <div className="w-fit h-fit mx-auto">
@@ -22,21 +25,38 @@ export default function Processing({ textRefs, processingRef }: ProcessingProps)
                             ref={processingRef}
                             className={`absolute w-[170px] h-[170px] flex flex-col gap-6 justify-center items-center text-center bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full rounded-full overflow-clip ${poppins500.className}`}
                         >
-                            {["Extracting Invoice details from message...", "Verifying valid message format", "Generating invoice", "Done"].map(
-                                (text, index) => (
-                                    <p
-                                        key={index}
-                                        ref={(el) => {
-                                            if (textRefs.current) {
-                                                textRefs.current[index] = el;
-                                            }
-                                        }}
-                                        className="absolute w-[80%] text-wrap text-neutral-400 text-[8px] tracking-wider text-center"
-                                    >
-                                        {text}
-                                    </p>
-                                )
-                            )}
+                            {
+                                [
+                                    {
+                                        txt: "Extracting Invoice details from message...",
+                                        id: 0,
+                                    },
+                                    {
+                                        txt: "Verifying valid message format",
+                                        id: 1,
+                                    },
+                                    {
+                                        txt: "Generating invoice",
+                                        id: 2,
+                                    },
+                                    {
+                                        txt: "Done",
+                                        id: 3,
+                                    }].map(
+                                        (text) => (
+                                            <p
+                                                key={text.id}
+                                                ref={(el) => {
+                                                    if (textRefs.current) {
+                                                        textRefs.current[text.id] = el;
+                                                    }
+                                                }}
+                                                className={`absolute w-[80%] text-wrap text-neutral-400 text-[8px] tracking-wider text-center ${text.id === 0 ? "opacity-100" : "opacity-0"}`}
+                                            >
+                                                {text.txt}
+                                            </p>
+                                        )
+                                    )}
                         </div>
 
 
@@ -71,10 +91,12 @@ export default function Processing({ textRefs, processingRef }: ProcessingProps)
                         </div>
 
                         {/* Bottom Line */}
-                        <div className="w-px h-32 bg-[#696969] absolute bottom-1/2 transform translate-y-[267%]"></div>
+                        <div ref={processDoneBottomLineRef} className="w-px h-32 bg-[#696969] absolute bottom-1/2 transform translate-y-[267%] opacity-0"></div>
 
-                        {/* Check GIF */}
-                        <img src="/check-animated.gif" alt="Check Animated Green GIF" className="min-w-[100px] absolute -bottom-1/2 left-1/2 transform -translate-x-1/2 translate-y-[285%]" />
+                        {/* Check */}
+                        <div ref={processDoneCheckRef} className="size-12 absolute -bottom-1/2 left-1/2 transform -translate-x-1/2 translate-y-[600%] opacity-0">
+                            <FiCheckCircle className="text-white/60 size-12" />
+                        </div>
                     </div>
                 </div>
             </div>
