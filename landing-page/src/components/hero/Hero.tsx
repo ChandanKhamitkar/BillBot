@@ -63,7 +63,7 @@ export default function Hero() {
             }
         );
 
-        // Stage 1: Text and Subtext Transitions
+        // Stage 1: Text and Subtext Transitions.
         masterTimeline
             .to([textRef.current, subtextRef.current], {
                 opacity: 0,
@@ -113,7 +113,7 @@ export default function Hero() {
             "/Phone-4.png"
         ];
 
-        phoneImages.forEach((imageSrc, index) => {
+        phoneImages.forEach((imageSrc) => {
             masterTimeline
                 .to(startBtnPressRef.current, {
                     opacity: 0,
