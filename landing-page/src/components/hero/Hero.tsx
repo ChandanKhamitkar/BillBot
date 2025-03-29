@@ -28,6 +28,7 @@ export default function Hero() {
     const processDoneCheckRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        
         if (!textRef.current || !phoneRef.current || !subtextRef.current) {
             alert("there is no main text or phone ref or subtext");
             return;
@@ -246,6 +247,7 @@ export default function Hero() {
         ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
 }, []);
+
 return (
     <div ref={heroSectionRef} className="heroSection w-full h-screen bg-black/10 backdrop-blur-xs relative mb-72">
         {/* Navbar */}

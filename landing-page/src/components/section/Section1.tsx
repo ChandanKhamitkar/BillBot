@@ -1,10 +1,58 @@
+"use client";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { youngserif, poppins400 } from "@/utils/fonts";
+
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+}
 export default function Section1() {
+    const section1Ref = useRef<HTMLDivElement>(null);
+    const leftRef = useRef<HTMLDivElement>(null);
+    const rightRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+
+        gsap.set(leftRef.current, {
+            scale: 0.1,
+            x: "-100%",
+            y: 100,
+        });
+
+        gsap.set(rightRef.current, {
+            scale: 0.1,
+            x: "100%",
+            y: 100,
+        });
+
+        gsap.to([leftRef.current, rightRef.current], {
+            scale: 1,
+            x: 0,
+            y: 0,
+            duration: 2,
+            ease: "power3.inOut",
+            scrollTrigger: {
+                trigger: section1Ref.current,
+                start: "top 50%",
+                toggleActions: "play reverse play reverse"
+            }
+        })
+
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        }
+    }, []);
+
     return (
-        <div className="bg-black w-full h-full grid grid-cols-2 grid-rows-1 gap-10 mx-auto px-12 py-8">
+        <div
+            ref={section1Ref}
+            className="bg-black w-full h-full grid grid-cols-2 grid-rows-1 gap-10 mx-auto px-12 py-8 overflow-clip">
 
             {/* Left Section */}
-            <div className="rounded-xl overflow-clip border border-[#2E2E2E] relative">
+            <div
+                ref={leftRef}
+                className="rounded-xl overflow-clip border border-[#2E2E2E] relative">
                 <img src="/sec-1-left-bg.png" alt="Section 1 left bg wavery image" className="object-center" />
 
                 <div className="space-y-4 absolute left-10 bottom-10 z-10">
@@ -20,7 +68,9 @@ export default function Section1() {
             </div>
 
             {/* Right Section */}
-            <div className="rounded-xl overflow-clip border border-white/60 flex justify-center items-center relative shadow-[inset_0_0_30px_0_rgba(255,255,255,0.2)] ">
+            <div
+                ref={rightRef}
+                className="rounded-xl overflow-clip border border-white/60 flex justify-center items-center relative shadow-[inset_0_0_30px_0_rgba(255,255,255,0.2)] ">
                 <img src="/sec-1-right-bg.png" alt="Section 1 right bg light image" className="object-center opacity-80 blur-lg" />
                 <img src="/react.png" alt="react" className="z-10 w-[217px] absolute mix-blend-luminosity" />
                 <div className="w-[90%] h-[90%] rounded-xl absolute z-10 border border-white opacity-70 "></div>

@@ -1,3 +1,7 @@
+"use client";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Navbar from "../navbar/Navbar";
 import { youngserif, poppins500, poppins400 } from "@/utils/fonts";
 import { LuSend } from "react-icons/lu";
@@ -9,9 +13,68 @@ const listData = [
     "No subscription"
 ];
 
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+}
+
 export default function Footer() {
+    const footerRef = useRef<HTMLDivElement>(null);
+    const headRef = useRef<HTMLDivElement>(null);
+    const middleRef = useRef<HTMLDivElement>(null);
+    const separatorRef = useRef<HTMLDivElement>(null);
+    const pref = useRef<HTMLParagraphElement>(null);
+
+    useEffect(() => {
+
+        const mainTimeline = gsap.timeline({
+            scrollTrigger: {
+                trigger: footerRef.current,
+                start: "top 1%",
+                end: "+=100%",
+                scrub: true,
+                pin: true,
+                pinSpacing: true,
+                toggleActions: "play reverse play reverse"
+            }
+        });
+
+        mainTimeline.fromTo(footerRef.current,
+            {
+                opacity: 0,
+                y: -50,
+                scale: 0.8,
+                filter: "blur(10px)"
+            },
+            {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                filter: "blur(0px)",
+                duration: 3,
+                ease: "power3.out"
+            });
+        mainTimeline.fromTo([headRef.current, middleRef.current, separatorRef.current],
+            {
+                opacity: 0,
+                y: -50,
+                scale: 0.8,
+                filter: "blur(10px)"
+            },
+            {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                filter: "blur(0px)",
+                duration: 3,
+                ease: "power3.out"
+            },"-=0.2");
+
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        };
+    }, []);
     return (
-        <div className="w-screen h-screen bg-black backdrop-blur-xs relative overflow-clip flex flex-col">
+        <div ref={footerRef} className="w-screen h-screen bg-black backdrop-blur-xs relative overflow-clip flex flex-col">
             {/* Navbar */}
             <Navbar />
 
@@ -25,7 +88,7 @@ export default function Footer() {
             {/* Content Wrapper */}
             <div className="w-full flex-1 flex flex-col justify-end space-y-10 p-10 text-white z-10">
                 {/* Main Heading */}
-                <div>
+                <div ref={headRef}>
                     <p className={`${youngserif.className} text-9xl`}>Ready to try?</p>
                     <p className="text-2xl flex items-center">
                         Use BillBot AI on <LuSend className="mx-2" /> Telegram
@@ -33,7 +96,7 @@ export default function Footer() {
                 </div>
 
                 {/* Middle Content */}
-                <div className="flex justify-between items-center mt-10">
+                <div ref={middleRef} className="flex justify-between items-center mt-10">
                     <p className={`${youngserif.className} text-2xl`}>
                         Try it for<br />Free
                     </p>
@@ -58,10 +121,10 @@ export default function Footer() {
                 </div>
 
                 {/* Separator Line */}
-                <div className="w-full h-px border border-[#5B5B5B] border-dashed"></div>
+                <div ref={separatorRef} className="w-full h-px border border-[#5B5B5B] border-dashed"></div>
 
                 {/* Footer Text */}
-                <p className={`${poppins400.className} text-[#C5C5C5] text-sm`}>
+                <p ref={pref} className={`${poppins400.className} text-[#C5C5C5] text-sm`}>
                     You can use it from any region.
                 </p>
             </div>
