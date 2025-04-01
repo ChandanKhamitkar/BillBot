@@ -2,9 +2,10 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { poppins700, poppins400 } from "@/utils/fonts";
+import { poppins700, poppins400, poppins500 } from "@/utils/fonts";
 import GitHubSolarSystem from "./GitHubSolarSystem";
 import Navbar from "../navbar/Navbar";
+import { HiMiniArrowTopRightOnSquare } from "react-icons/hi2";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -96,8 +97,11 @@ export default function Section3() {
     }, []);
 
     return (
-        <div ref={sectionRef} className="w-full h-screen bg-black backdrop-blur-xs relative overflow-clip flex justify-around items-center">
-
+        <div ref={sectionRef} className="w-full h-screen bg-black backdrop-blur-xs relative overflow-clip">
+            {/* Background elements */}
+            <img src="/DotGrid.svg" alt="Dot Pattern Grid" className="absolute w-screen" />
+            <img src="/sec-3-shades.svg" alt="Black top bottom shades" className="absolute w-screen" />
+            <img src="/sec-3-white-ball.png" alt="white shade ball" className="absolute w-screen blur-3xl" />
 
             {/* Cursor */}
             <img
@@ -106,31 +110,41 @@ export default function Section3() {
                 alt="Cursor"
                 className="absolute top-0 left-0 z-[120] w-8 h-8 rotate-45"
             />
+
             {/* Navbar */}
             <Navbar name={false} version={false} trynow={false} />
 
-            <img src="/DotGrid.svg" alt="Dot Pattern Grid" className="absolute w-screen" />
-            <img src="/sec-3-shades.svg" alt="Black top bottom shades" className="absolute w-screen" />
-            <img src="/sec-3-white-ball.png" alt="white shade ball" className="absolute w-screen blur-3xl" />
+            {/* Content container - using flex row instead of absolute positioning */}
+            <div className="w-full h-1/2 xl:h-full flex flex-col xl:flex-row items-start xl:items-center justify-center xl:justify-between px-16 space-y-6">
+                {/* Left section */}
+                <div ref={leftRef} className="opacity-0 xl:opacity-100 xl:flex flex-col space-y-4 w-[90%] xl:w-1/2 z-30 ">
+                    <p className={`${poppins700.className} text-5xl sm:text-6xl xl:text-7xl 2xl:text-8xl text-white whitespace-pre-wrap leading-14 sm:leading-20 2xl:leading-28`}>
+                        Wanna
+                        <br />
+                        Contribute! 🚀
+                    </p>
 
-            {/* Left section */}
-            <div ref={leftRef} className="flex justify-start flex-col space-y-4 absolute left-18 top-1/2 transform -translate-y-1/2">
-                <p className={`${poppins700.className} text-8xl text-white whitespace-pre-wrap leading-28`}>
-                    Wanna
-                    <br />
-                    Contribute! 🚀
-                </p>
+                    <p className={`${poppins400.className} text-white/70 text-wrap w-[80%]`}>
+                        Have an idea? 💡 Jump in, explore the codebase, and become a part of our growing universe! 🌌✨
+                    </p>
 
-                <p className={`${poppins400.className} text-white/70 text-wrap w-[80%]`}>
-                    Have an idea? 💡 Jump in, explore the codebase, and become a part of our growing universe! 🌌✨
-                </p>
+                    <a
+                        href="https://github.com/ChandanKhamitkar/BillBot"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-[#131313] text-white/80 font-semibold text-sm w-fit ${poppins500.className} hover:scale-110 transition-all duration-300 ease-in-out`}
+                    >
+                        Contribute
+                        <HiMiniArrowTopRightOnSquare className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </a>
+
+                </div>
+
+                {/* Right Side */}
+                <div ref={solarSystem} className="flex items-center self-center w-1/2 scale-75 xl:scale-100">
+                    <GitHubSolarSystem />
+                </div>
             </div>
-
-            {/* Right Side */}
-            <div ref={solarSystem} className="w-[50%] flex justify-center transform translate-x-1/2">
-                <GitHubSolarSystem />
-            </div>
-
         </div>
     );
 };

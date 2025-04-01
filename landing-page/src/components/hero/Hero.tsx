@@ -27,8 +27,9 @@ export default function Hero() {
     const processDoneBottomLineRef = useRef<HTMLDivElement>(null);
     const processDoneCheckRef = useRef<HTMLDivElement>(null);
 
+    // GSAP Animation
     useEffect(() => {
-        
+
         if (!textRef.current || !phoneRef.current || !subtextRef.current) {
             alert("there is no main text or phone ref or subtext");
             return;
@@ -243,100 +244,103 @@ export default function Hero() {
             })
 
 
-    return () => {
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-}, []);
+        return () => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        };
+    }, []);
 
-return (
-    <div ref={heroSectionRef} className="heroSection w-full h-screen bg-black/10 backdrop-blur-xs relative mb-72">
-        {/* Navbar */}
-        <Navbar />
+    return (
+        <div ref={heroSectionRef} className="heroSection w-full h-screen bg-black/10 backdrop-blur-xs relative mb-72 overflow-clip">
+            {/* Navbar */}
+            <Navbar />
 
-        {/* The purple circle + Noise + Star pattern */}
-        <div ref={bgRef} className="backgroundImages absolute top-0 left-0 w-full h-screen z-0">
-            <img
-                src="/purple-glow.png"
-                className="absolute top-0 backdrop-blur-xs w-full h-screen z-0"
-                alt="Purple glow of hero section"
-            />
-            <img
-                src="/starPattern.png"
-                alt="Star pattern"
-                className="w-[40%] h-[40%] absolute top-0 object-contain transform left-1/2 -translate-x-1/2 z-0"
-            />
-        </div>
-
-        {/* Hero text */}
-        <div
-            className={`w-max h-screen mx-auto flex flex-col justify-center items-center space-y-6 text-white relative z-10 shadow-xl ${youngserif.className}`}
-        >
-            {/* Main Title */}
-            <div
-                ref={textRef}
-                className="relative mainText">
-                <p className="text-8xl">Invoicing, Simplified</p>
-
-                {/* Single Star positioned at the top-right of the main text */}
+            {/* The purple circle + Noise + Star pattern */}
+            <div ref={bgRef} className="backgroundImages absolute top-0 left-0 w-full h-screen z-0">
                 <img
-                    src="/thin-star.svg"
-                    alt="Single star"
-                    className="absolute top-0 transform -translate-y-[80%] right-0 w-28 h-28 z-20"
+                    src="/purple-glow.png"
+                    className="absolute top-0 backdrop-blur-xs w-full h-screen z-0"
+                    alt="Purple glow of hero section"
+                />
+                <img
+                    src="/starPattern.png"
+                    alt="Star pattern"
+                    className="w-[40%] h-[40%] absolute top-0 object-contain transform left-1/2 -translate-x-1/2 z-0"
                 />
             </div>
 
-            {/* Sub-text */}
+            {/* Hero text */}
             <div
-                ref={subtextRef}
-                className="w-full flex justify-between items-center text-white/90">
-                <p className="text-2xl">
-                    <span className="flex justify-start items-center">
-                        from your {<LuSend className="ml-2" />}
-                    </span>
-                    <span>telegram chat</span>
-                </p>
+                className={`w-max h-screen mx-auto flex flex-col justify-center items-center space-y-2 mobile:space-y-6 text-white relative z-10 shadow-xl  ${youngserif.className}`}
+            >   
+                {/* Titles */}
+                <div className="w-max mx-6 mobile:mx-0 flex flex-col justify-center items-center space-y-2 mobile:space-y-6 transfrom -translate-y-3/4 mobile:-translate-y-0">
+                    {/* Main Title */}
+                    <div
+                        ref={textRef}
+                        className="relative mainText">
+                        <p className="text-3xl mobile2:text-4xl mobile:text-5xl sm:text-6xl md:text-7xl lg:text-8xl">Invoicing, Simplified</p>
 
-                <p className={`${ibmplexmono600.className} text-base flex flex-col justify-start`}>
-                    <span>a tool for Fast. Clean.</span>
-                    <span>Invoice Img generation</span>
-                </p>
-            </div>
+                        {/* Single Star positioned at the top-right of the main text */}
+                        <img
+                            src="/thin-star.svg"
+                            alt="Single star"
+                            className="absolute top-0 transform -translate-y-[80%] right-0 w-20 h-20 mobile:w-24 mobile:h-24 md:w-28 md:h-28 z-20"
+                        />
+                    </div>
 
-            {/* Mobile Phone Mockup */}
-            <div className="w-full flex justify-center mt-16 relative">
-                <div
-                    ref={phoneRef}
-                    className="w-fit h-fit absolute bottom-0 transform translate-y-[80%] rotate-12">
-                    <img
-                        ref={phoneImgRef}
-                        src="/Phone.png"
-                        alt="Mobile phone mockup"
-                        className="w-[280px] relative z-10"
-                    />
-                    <div ref={startBtnPressRef} className="absolute bottom-8 transform left-1/2 -translate-x-1/2 rounded-xl border-4 border-[#5404FF]/80 w-[220px] h-[50px] z-0 scale-0 opacity-0"></div>
-                    <img ref={leftMsgRef} src="/msg-left-blue.svg" alt="Left message box" className="absolute bottom-[6%] transform -translate-y-[50%] left-0 -translate-x-1/3 size-32 z-20 opacity-0 scale-0" />
-                    <img ref={rightMsgRef} src="/msg-right-blue.svg" alt="Right message box" className="absolute bottom-[16%] transform -translate-y-[50%] right-0 translate-x-1/3 size-28 z-20 opacity-0 scale-0" />
+                    {/* Sub-text */}
+                    <div
+                        ref={subtextRef}
+                        className="w-full flex flex-col md:flex-row justify-start md:justify-between items-start gap-2 md:gap-0 md:items-center text-white/90">
+                        <p className="text-lg mobile:text-2xl">
+                            <span className="flex justify-start items-center">
+                                from your {<LuSend className="ml-2" />}
+                            </span>
+                            <span>telegram chat</span>
+                        </p>
+
+                        <p className={`${ibmplexmono600.className} text-sm mobile:text-base flex flex-col justify-start tracking-widest sm:tracking-normal`}>
+                            <span>a tool for Fast. Clean.</span>
+                            <span>Invoice Img generation</span>
+                        </p>
+                    </div>
+                </div>
+
+                {/* Mobile Phone Mockup */}
+                <div className="w-full flex justify-center mt-16 relative">
+                    <div
+                        ref={phoneRef}
+                        className="w-fit h-fit absolute bottom-0 transform translate-y-[80%] rotate-12">
+                        <img
+                            ref={phoneImgRef}
+                            src="/Phone.png"
+                            alt="Mobile phone mockup"
+                            className="w-[280px] relative z-10"
+                        />
+                        <div ref={startBtnPressRef} className="absolute bottom-8 transform left-1/2 -translate-x-1/2 rounded-xl border-4 border-[#5404FF]/80 w-[220px] h-[50px] z-0 scale-0 opacity-0"></div>
+                        <img ref={leftMsgRef} src="/msg-left-blue.svg" alt="Left message box" className="absolute bottom-[6%] transform -translate-y-[50%] left-0 -translate-x-1/3 size-32 z-20 opacity-0 scale-0" />
+                        <img ref={rightMsgRef} src="/msg-right-blue.svg" alt="Right message box" className="absolute bottom-[16%] transform -translate-y-[50%] right-0 translate-x-1/3 size-28 z-20 opacity-0 scale-0" />
+                    </div>
                 </div>
             </div>
+
+            {/* Processing Component */}
+            <div
+                ref={processingRef}
+                className="absolute top-[14%] left-[20%] transform z-40 opacity-0"
+            >
+                <Processing
+                    textRefs={textRefs}
+                    processingRef={processingRef}
+                    processDoneBottomLineRef={processDoneBottomLineRef}
+                    processDoneCheckRef={processDoneCheckRef}
+                />
+            </div>
+
+
+            {/* 3d Gemini + Google icons */}
+            <img src="/gemini.png" alt="Gemini logo" className="bottomLogos absolute bottom-0 left-10  w-24 mobile2:w-28 sm:w-40" />
+            <img src="/google.png" alt="Google logo" className="bottomLogos absolute -bottom-12 right-10  w-24 mobile2:w-28 sm:w-40" />
         </div>
-
-        {/* Processing Component */}
-        <div
-            ref={processingRef}
-            className="absolute top-[14%] left-[20%] transform z-40 opacity-0"
-        >
-            <Processing
-                textRefs={textRefs}
-                processingRef={processingRef}
-                processDoneBottomLineRef={processDoneBottomLineRef}
-                processDoneCheckRef={processDoneCheckRef}
-            />
-        </div>
-
-
-        {/* 3d Gemini + Google icons */}
-        <img src="/gemini.png" alt="Gemini logo" className="bottomLogos absolute bottom-0 left-10 w-40" />
-        <img src="/google.png" alt="Google logo" className="bottomLogos absolute -bottom-12 right-10 w-40" />
-    </div>
-);
+    );
 }

@@ -253,7 +253,7 @@ export default function Section2() {
     return (
         <div
             ref={section1Ref}
-            className="bg-black w-full h-full grid grid-cols-2 grid-rows-1 gap-10 mx-auto px-12 py-8 relative">
+            className="bg-black w-full h-full grid grid-cols-1 tablet:grid-cols-2 grid-rows-2 tablet:grid-rows-1 gap-10 mx-auto px-12 py-8 relative">
 
             {/* Cursor */}
             <img
@@ -280,7 +280,8 @@ export default function Section2() {
                 <div
                     ref={rippleRef}
                     className="absolute w-16 h-16 rounded-full bg-white/30 pointer-events-none"
-                ></div>
+                >
+                </div>
             </div>
 
             {/* left section */}
@@ -293,7 +294,7 @@ export default function Section2() {
                 <div className="space-y-4 absolute left-10 top-10 z-10">
                     <p
                         ref={leftTitleRef}
-                        className={`text-5xl whitespace-pre-wrap text-left ${youngserif.className} text-white leading-16`}
+                        className={`text-3xl mobile:text-4xl xl:text-5xl whitespace-pre-wrap text-left ${youngserif.className} text-white leading-10 sm:leading-16`}
                     >
                         Download in
                         <br />
@@ -301,13 +302,13 @@ export default function Section2() {
                     </p>
                     <p
                         ref={leftDescRef}
-                        className={`${poppins400.className} text-sm text-wrap text-white/80 w-[90%]`}
+                        className={`${poppins400.className} text-xs mobile2:text-sm text-wrap text-white/80 w-[90%]`}
                     >
                         As JPG/JPEG format - perfect for sharing anytime, anywhere!
                     </p>
                     <p
                         ref={leftCTARef}
-                        className={`${poppins500.className} text-sm text-wrap text-white flex items-center`}
+                        className={`${poppins500.className} text-xs mobile2:text-sm text-wrap text-white flex items-center`}
                     >
                         Try it <FaArrowRight className="ml-2" size={12} />
                     </p>
@@ -326,7 +327,7 @@ export default function Section2() {
                     ref={leftDownloadIconRef}
                     src="/download-icon.svg"
                     alt="Cloud Download Arrow icon"
-                    className="absolute bottom-16 left-1/2 transform -translate-x-1/2 floating"
+                    className="absolute bottom-16 left-1/2 transform -translate-x-1/2 floating size-24 mobile:size-32 sm:size-50"
                 />
             </div>
 
@@ -340,7 +341,7 @@ export default function Section2() {
                 <div className="space-y-4 absolute left-10 top-10 z-10">
                     <p
                         ref={rightTitleRef}
-                        className={`text-5xl whitespace-pre-wrap text-left ${youngserif.className} text-white leading-16`}
+                        className={`text-3xl mobile:text-4xl xl:text-5xl whitespace-pre-wrap text-left ${youngserif.className} text-white leading-10 sm:leading-16`}
                     >
                         Share Effortlessly
                         <br />
@@ -348,7 +349,7 @@ export default function Section2() {
                     </p>
                     <p
                         ref={rightDescRef}
-                        className={`${poppins400.className} text-sm text-wrap text-white/80 w-[90%]`}
+                        className={`${poppins400.className} text-xs mobile2:text-sm text-wrap text-white/80 w-[90%]`}
                     >
                         Generate and forward as products ordered from your clients.
                     </p>
@@ -363,17 +364,17 @@ export default function Section2() {
                 {/* Bottom Success Section */}
                 <div
                     ref={successBoxRef}
-                    className="w-max h-max bg-[#131313] rounded-lg flex flex-col justify-center items-center absolute bottom-0 left-1/2 transform -translate-x-1/2 overflow-clip"
+                    className="w-fit h-fit sm:w-max sm:h-max bg-[#131313] rounded-lg flex flex-col justify-center items-center absolute bottom-0 left-1/2 transform -translate-x-1/2 overflow-clip"
                 >
                     <img src="/success-bg.svg" alt="White shade" className="opacity-55" />
 
                     <div className="w-[60%] flex flex-col justify-center items-center space-y-3 absolute z-10">
                         <div className="w-8 h-8 bg-white rounded-full flex justify-center items-center">
-                            <FiShare2 size={16} className="text-black" />
+                            <FiShare2 className="text-black size-3 sm:size-4" />
                         </div>
 
-                        <p className={`${poppins600.className} text-lg text-white`}>Success!</p>
-                        <p className={`${poppins500.className} text-sm text-white/70 text-wrap text-center`}>Thanks for using!, you will be updated with more features.</p>
+                        <p className={`${poppins600.className} text-sm sm:text-lg text-white`}>Success!</p>
+                        <p className={`${poppins500.className} text-[9px] sm:text-sm text-white/70 text-wrap text-center`}>Thanks for using!, you will be updated with more features.</p>
                     </div>
                 </div>
 

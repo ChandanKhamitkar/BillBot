@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@theme {
+  --breakpoint-mobile: 540px;
+  --breakpoint-mobile2: 400px;
+  --breakpoint-tablet: 840px;
+}
+
 :root {
   --background: #000000;
   --foreground: #ffffff;

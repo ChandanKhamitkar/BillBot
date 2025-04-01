@@ -73,6 +73,7 @@ export default function Footer() {
             ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
         };
     }, []);
+    
     return (
         <div ref={footerRef} className="w-screen h-screen bg-black backdrop-blur-xs relative overflow-clip flex flex-col">
             {/* Navbar */}
@@ -89,32 +90,32 @@ export default function Footer() {
             <div className="w-full flex-1 flex flex-col justify-end space-y-10 p-10 text-white z-10">
                 {/* Main Heading */}
                 <div ref={headRef}>
-                    <p className={`${youngserif.className} text-9xl`}>Ready to try?</p>
-                    <p className="text-2xl flex items-center">
+                    <p className={`${youngserif.className} text-7xl lg:text-9xl`}>Ready to try?</p>
+                    <p className="text-xl sm:text-2xl flex items-center">
                         Use BillBot AI on <LuSend className="mx-2" /> Telegram
                     </p>
                 </div>
 
                 {/* Middle Content */}
-                <div ref={middleRef} className="flex justify-between items-center mt-10">
-                    <p className={`${youngserif.className} text-2xl`}>
+                <div ref={middleRef} className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-10 space-y-10 sm:space-y-0">
+                    <p className={`${youngserif.className} text-xl lg:text-2xl`}>
                         Try it for<br />Free
                     </p>
 
                     <div className="flex flex-col space-y-2">
                         {listData.map((item, index) => (
                             <div key={index} className="flex space-x-2 items-center">
-                                <div className="w-10 h-10 bg-[#5404FF] rounded-full flex justify-center items-center">
-                                    <IoStar size={20} />
+                                <div className="w-7 h-7 lg:w-10 lg:h-10 bg-[#5404FF] rounded-full flex justify-center items-center">
+                                    <IoStar className="size-5" />
                                 </div>
-                                <p className={`${poppins500.className} text-base`}>{item}</p>
+                                <p className={`${poppins500.className} text-sm lg:text-base`}>{item}</p>
                             </div>
                         ))}
                     </div>
 
-                    <div className="w-[30%]">
+                    <div className="w-[80%] sm:w-[30%]">
                         <p className={`${youngserif.className} text-2xl`}>Why us?</p>
-                        <p className={`${poppins400.className} text-wrap`}>
+                        <p className={`${poppins400.className} text-sm lg:text-base text-wrap`}>
                             Simply chat your invoice details, and we&apos;ll transform them into a sleek, professional invoice image!
                         </p>
                     </div>
@@ -124,7 +125,7 @@ export default function Footer() {
                 <div ref={separatorRef} className="w-full h-px border border-[#5B5B5B] border-dashed"></div>
 
                 {/* Footer Text */}
-                <p ref={pref} className={`${poppins400.className} text-[#C5C5C5] text-sm`}>
+                <p ref={pref} className={`${poppins400.className} text-[#C5C5C5] text-xs sm:text-sm`}>
                     You can use it from any region.
                 </p>
             </div>
