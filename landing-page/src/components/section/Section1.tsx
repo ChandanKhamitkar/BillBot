@@ -34,7 +34,7 @@ export default function Section1() {
             ease: "power3.inOut",
             scrollTrigger: {
                 trigger: section1Ref.current,
-                start: "top 50%",
+                start: "top 60%",
                 toggleActions: "play reverse play reverse"
             }
         })

@@ -35,12 +35,14 @@ export default function Hero() {
             return;
         }
 
+        const isDesktop = window.innerWidth > 1199;
+
         // Master Timeline for Smooth Scroll-Triggered Animations
         const masterTimeline = gsap.timeline({
             scrollTrigger: {
                 trigger: heroSectionRef.current,
                 start: "top top",
-                end: "+=400%",
+                end: "+=100%",
                 scrub: 1.5,
                 pin: true,
                 pinSpacing: true,
@@ -142,90 +144,92 @@ export default function Hero() {
         });
 
         // Phone Exit and Processing Component
-        masterTimeline
-            .to(phoneRef.current, {
-                x: "100%",
-                scale: 1,
-                duration: 3,
-                ease: "power2.inOut"
-            })
-            .to(processingRef.current, {
-                opacity: 1,
-                x: "20%",
-                duration: 1,
-                ease: "power2.out",
-                onComplete: () => {
-                    // Sequential text animation for Processing Component
-                    if (textRefs.current.length > 0) {
-                        // Initial state for all texts
-                        textRefs.current.forEach((text, index) => {
-                            gsap.set(text, {
-                                opacity: index === 0 ? 1 : 0,
-                                scale: index === 0 ? 1 : 0.8,
-                                y: index === 0 ? 0 : 100,
-                                fontWeight: index === 0 ? "bold" : "normal",
-                                transformOrigin: "center center" // Ensure scaling happens from center
-                            });
-                        });
-
-                        let currentIndex = 0;
-                        const totalTexts = textRefs.current.length;
-
-                        const animateTexts = () => {
-                            // Move the current text up and reduce its opacity and scale
-                            gsap.to(textRefs.current[currentIndex], {
-                                opacity: 0.5,
-                                scale: 0.8,
-                                y: -50,
-                                duration: 0.8,
-                                ease: "power2.inOut",
-                            });
-
-                            currentIndex = (currentIndex + 1) % totalTexts;
-
-                            // Bring the next text to the center with improved centering
-                            gsap.to(textRefs.current[currentIndex], {
-                                opacity: 1,
-                                scale: 1,
-                                y: 0,
-                                duration: 0.8,
-                                ease: "power2.inOut",
-                                onComplete: () => {
-                                    if (currentIndex < totalTexts - 1) {
-                                        setTimeout(animateTexts, 2000);
-                                    }
-                                },
-                            });
-
-                            // Reposition other texts more precisely
+        if (isDesktop) {
+            masterTimeline
+                .to(phoneRef.current, {
+                    x: "100%",
+                    scale: 1,
+                    duration: 3,
+                    ease: "power2.inOut"
+                })
+                .to(processingRef.current, {
+                    opacity: 1,
+                    x: "20%",
+                    duration: 1,
+                    ease: "power2.out",
+                    onComplete: () => {
+                        // Sequential text animation for Processing Component
+                        if (textRefs.current.length > 0) {
+                            // Initial state for all texts
                             textRefs.current.forEach((text, index) => {
-                                if (index !== currentIndex) {
-                                    const offset = index < currentIndex
-                                        ? -(Math.abs(index - currentIndex) * 50)
-                                        : (index - currentIndex) * 50;
-
-                                    gsap.to(text, {
-                                        y: offset,
-                                        opacity: 0.5,
-                                        scale: 0.8,
-                                        duration: 0.8,
-                                        ease: "power2.inOut",
-                                    });
-                                }
+                                gsap.set(text, {
+                                    opacity: index === 0 ? 1 : 0,
+                                    scale: index === 0 ? 1 : 0.8,
+                                    y: index === 0 ? 0 : 100,
+                                    fontWeight: index === 0 ? "bold" : "normal",
+                                    transformOrigin: "center center" // Ensure scaling happens from center
+                                });
                             });
-                        };
-                        setTimeout(animateTexts, 2000);
+
+                            let currentIndex = 0;
+                            const totalTexts = textRefs.current.length;
+
+                            const animateTexts = () => {
+                                // Move the current text up and reduce its opacity and scale
+                                gsap.to(textRefs.current[currentIndex], {
+                                    opacity: 0.5,
+                                    scale: 0.8,
+                                    y: -50,
+                                    duration: 0.8,
+                                    ease: "power2.inOut",
+                                });
+
+                                currentIndex = (currentIndex + 1) % totalTexts;
+
+                                // Bring the next text to the center with improved centering
+                                gsap.to(textRefs.current[currentIndex], {
+                                    opacity: 1,
+                                    scale: 1,
+                                    y: 0,
+                                    duration: 0.8,
+                                    ease: "power2.inOut",
+                                    onComplete: () => {
+                                        if (currentIndex < totalTexts - 1) {
+                                            setTimeout(animateTexts, 2000);
+                                        }
+                                    },
+                                });
+
+                                // Reposition other texts more precisely
+                                textRefs.current.forEach((text, index) => {
+                                    if (index !== currentIndex) {
+                                        const offset = index < currentIndex
+                                            ? -(Math.abs(index - currentIndex) * 50)
+                                            : (index - currentIndex) * 50;
+
+                                        gsap.to(text, {
+                                            y: offset,
+                                            opacity: 0.5,
+                                            scale: 0.8,
+                                            duration: 0.8,
+                                            ease: "power2.inOut",
+                                        });
+                                    }
+                                });
+                            };
+                            setTimeout(animateTexts, 2000);
+                        }
+                    },
+                    onLeaveBack: () => {
+                        gsap.to(processingRef.current, {
+                            opacity: 0,
+                            x: "-100%",
+                            duration: 1,
+                            ease: "power2.in"
+                        });
                     }
-                },
-                onLeaveBack: () => {
-                    gsap.to(processingRef.current, {
-                        opacity: 0,
-                        x: "-100%",
-                        duration: 1,
-                        ease: "power2.in"
-                    });
-                }
-            });
+                });
+        }
 
         // Final Phone image (invoice received)
         masterTimeline
@@ -241,7 +245,7 @@ export default function Hero() {
                     })
                 },
                 ease: "power2.inOut"
-            })
+            });
 
 
         return () => {
@@ -250,7 +254,7 @@ export default function Hero() {
     }, []);
 
     return (
-        <div ref={heroSectionRef} className="heroSection w-full h-screen bg-black/10 backdrop-blur-xs relative mb-72 overflow-clip">
+        <div ref={heroSectionRef} className="heroSection w-full h-screen bg-black/10 backdrop-blur-xs relative mb-10 overflow-clip">
             {/* Navbar */}
             <Navbar />
 
@@ -271,7 +275,7 @@ export default function Hero() {
             {/* Hero text */}
             <div
                 className={`w-max h-screen mx-auto flex flex-col justify-center items-center space-y-2 mobile:space-y-6 text-white relative z-10 shadow-xl overflow-clip  ${youngserif.className}`}
-            >   
+            >
                 {/* Titles */}
                 <div className="w-max mx-6 mobile:mx-0 flex flex-col justify-center items-center space-y-2 mobile:space-y-6 transfrom -translate-y-3/4 mobile:-translate-y-0">
                     {/* Main Title */}
@@ -339,8 +343,8 @@ export default function Hero() {
 
 
             {/* 3d Gemini + Google icons */}
-            <img src="/gemini.png" alt="Gemini logo" className="bottomLogos absolute bottom-0 left-10  w-24 mobile2:w-28 sm:w-40" />
-            <img src="/google.png" alt="Google logo" className="bottomLogos absolute -bottom-12 right-10  w-24 mobile2:w-28 sm:w-40" />
+            <img src="/gemini.png" alt="Gemini logo" className="bottomLogos absolute bottom-1 left-10 w-20 mobile2:w-24 sm:w-32 md:w-40" />
+            <img src="/google.png" alt="Google logo" className="bottomLogos absolute -bottom-4 right-10 w-24 mobile2:w-28 sm:w-36 md:w-40" />
         </div>
     );
 }

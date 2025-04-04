@@ -253,7 +253,7 @@ export default function Section2() {
     return (
         <div
             ref={section1Ref}
-            className="bg-black w-full h-full grid grid-cols-1 tablet:grid-cols-2 grid-rows-2 tablet:grid-rows-1 gap-10 mx-auto px-12 py-8 relative overflow-clip overflow-x-hidden">
+            className="bg-black w-full h-full grid grid-cols-1 tablet:grid-cols-2 grid-rows-2 tablet:grid-rows-1 gap-10 mx-auto my-auto mobile:my-0 px-12 py-8 relative overflow-clip overflow-x-hidden">
 
             {/* Cursor */}
             <img
