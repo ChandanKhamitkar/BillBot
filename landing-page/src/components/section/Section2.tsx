@@ -22,13 +22,13 @@ export default function Section2() {
     // Refs for inner content animations
     const leftTitleRef = useRef<HTMLParagraphElement>(null);
     const leftDescRef = useRef<HTMLParagraphElement>(null);
-    const leftCTARef = useRef<HTMLParagraphElement>(null);
+    const leftCTARef = useRef<HTMLAnchorElement>(null);
     const leftDownloadIconRef = useRef<HTMLImageElement>(null);
     const leftDiamondRef = useRef<HTMLImageElement>(null);
 
     const rightTitleRef = useRef<HTMLParagraphElement>(null);
     const rightDescRef = useRef<HTMLParagraphElement>(null);
-    const rightCTARef = useRef<HTMLParagraphElement>(null);
+    const rightCTARef = useRef<HTMLAnchorElement>(null);
     const successBoxRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -305,12 +305,14 @@ export default function Section2() {
                     >
                         As JPG/JPEG format - perfect for sharing anytime, anywhere!
                     </p>
-                    <p
+                    <a
                         ref={leftCTARef}
-                        className={`${poppins500.className} text-[10px] mobile2:text-sm text-wrap text-white flex items-center`}
+                        href="https://web.telegram.org/k/#@TreekeyBot" 
+                        target="_blank"
+                        className={`${poppins500.className} text-[10px] mobile2:text-sm text-wrap text-white flex items-center cursor-pointer hover:scale-110 transition-all duration-300 ease-in-out hover:text-white/90 z-50`}
                     >
                         Try it <FaArrowRight className="ml-2" size={12} />
-                    </p>
+                    </a>
                 </div>
 
                 {/* Golden Diamond on top-right */}
@@ -352,12 +354,14 @@ export default function Section2() {
                     >
                         Generate and forward as products ordered from your clients.
                     </p>
-                    <p
+                    <a
                         ref={rightCTARef}
-                        className={`${poppins500.className} text-[10px] mobile2:text-sm text-wrap text-white flex items-center`}
+                        href="https://web.telegram.org/k/#@TreekeyBot" 
+                        target="_blank"
+                        className={`${poppins500.className} text-[10px] mobile2:text-sm text-wrap text-white flex items-center cursor-pointer hover:scale-110 transition-all duration-300 ease-in-out hover:text-white/90 z-50`}
                     >
                         Try it <FaArrowRight className="ml-2" size={12} />
-                    </p>
+                    </a>
                 </div>
 
                 {/* Bottom Success Section */}
