@@ -55,13 +55,13 @@ export default function Section1() {
                 className="rounded-xl overflow-clip border border-[#2E2E2E] relative">
                 <img src="/sec-1-left-bg.png" alt="Section 1 left bg wavery image" className="object-center" />
 
-                <div className="space-y-4 absolute left-10 bottom-10 z-10">
-                    <p className={`text-4xl xl:text-5xl whitespace-pre-wrap text-left ${youngserif.className} text-white`}>
+                <div className="space-y-4 absolute left-6 mobile:left-10 bottom-6 mobile:bottom-10 z-10">
+                    <p className={`text-2xl mobile2:text-3xl mobile:text-4xl xl:text-5xl whitespace-pre-wrap text-left ${youngserif.className} text-white`}>
                         Create unlimited
                         <br />
                         invoices instantly
                     </p>
-                    <p className={`${poppins400.className} text-sm text-wrap text-white/80 w-[70%]`}>
+                    <p className={`${poppins400.className} text-xs mobile:text-sm text-wrap text-white/80 w-[70%]`}>
                         Just send customer details, and BillBot AI 🤖will generate a beautiful invoice. image—fast and hassle-free.
                     </p>
                 </div>

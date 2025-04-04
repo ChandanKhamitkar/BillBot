@@ -115,16 +115,17 @@ export default function Section3() {
             <Navbar name={false} version={false} trynow={false} />
 
             {/* Content container - using flex row instead of absolute positioning */}
-            <div className="w-full h-1/2 xl:h-full flex flex-col xl:flex-row items-start xl:items-center justify-center xl:justify-between px-16 space-y-6">
+            <div className="w-full h-1/2 xl:h-full flex flex-col xl:flex-row items-start xl:items-center justify-center xl:justify-between px-10 moblie:px-16 space-y-6">
+
                 {/* Left section */}
-                <div ref={leftRef} className="opacity-0 xl:opacity-100 xl:flex flex-col space-y-4 w-[90%] xl:w-1/2 z-30 ">
-                    <p className={`${poppins700.className} text-5xl sm:text-6xl xl:text-7xl 2xl:text-8xl text-white whitespace-pre-wrap leading-14 sm:leading-20 2xl:leading-28`}>
+                <div ref={leftRef} className="xl:flex flex-col space-y-4 w-[90%] xl:w-1/2 z-30 ">
+                    <p className={`${poppins700.className} text-3xl mobile2:text-4xl mobile:text-5xl sm:text-6xl xl:text-7xl 2xl:text-8xl text-white whitespace-pre-wrap leading-10 mobile:leading-14 sm:leading-20 2xl:leading-28`}>
                         Wanna
                         <br />
                         Contribute! 🚀
                     </p>
 
-                    <p className={`${poppins400.className} text-white/70 text-wrap w-[80%]`}>
+                    <p className={`${poppins400.className} text-xs mobile:text-base text-white/70 text-wrap w-[90%] mobile:w-[80%]`}>
                         Have an idea? 💡 Jump in, explore the codebase, and become a part of our growing universe! 🌌✨
                     </p>
 
@@ -132,7 +133,7 @@ export default function Section3() {
                         href="https://github.com/ChandanKhamitkar/BillBot"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-[#131313] text-white/80 font-semibold text-sm w-fit ${poppins500.className} hover:scale-110 transition-all duration-300 ease-in-out`}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-[#131313] text-white/80 font-semibold text-xs mobile:text-sm w-fit ${poppins500.className} hover:scale-110 transition-all duration-300 ease-in-out`}
                     >
                         Contribute
                         <HiMiniArrowTopRightOnSquare className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -141,7 +142,7 @@ export default function Section3() {
                 </div>
 
                 {/* Right Side */}
-                <div ref={solarSystem} className="flex items-center self-center w-1/2 scale-75 xl:scale-100">
+                <div ref={solarSystem} className="flex items-center self-center w-1/2 scale-50 mobile:scale-75 xl:scale-100 transform translate-y-[170px] mobile2:translate-y-[200px] xl:translate-y-0">
                     <GitHubSolarSystem />
                 </div>
             </div>

@@ -253,7 +253,7 @@ export default function Section2() {
     return (
         <div
             ref={section1Ref}
-            className="bg-black w-full h-full grid grid-cols-1 tablet:grid-cols-2 grid-rows-2 tablet:grid-rows-1 gap-10 mx-auto px-12 py-8 relative">
+            className="bg-black w-full h-full grid grid-cols-1 tablet:grid-cols-2 grid-rows-2 tablet:grid-rows-1 gap-10 mx-auto px-12 py-8 relative overflow-clip overflow-x-hidden">
 
             {/* Cursor */}
             <img
@@ -276,7 +276,6 @@ export default function Section2() {
                     className="cursor-pointer"
                 />
 
-                {/* Ripple effect div */}
                 <div
                     ref={rippleRef}
                     className="absolute w-16 h-16 rounded-full bg-white/30 pointer-events-none"
@@ -291,10 +290,10 @@ export default function Section2() {
             >
                 <img src="/sec-2-left-bg.png" alt="Section 2 left bg image" className="object-center blur-sm" />
 
-                <div className="space-y-4 absolute left-10 top-10 z-10">
+                <div className="space-y-4 absolute left-6 mobile:left-10 top-6 mobile:top-10 z-10">
                     <p
                         ref={leftTitleRef}
-                        className={`text-3xl mobile:text-4xl xl:text-5xl whitespace-pre-wrap text-left ${youngserif.className} text-white leading-10 sm:leading-16`}
+                        className={`text-2xl mobile2:text-3xl mobile:text-4xl xl:text-5xl whitespace-pre-wrap text-left ${youngserif.className} text-white leading-8 mobile:leading-10 sm:leading-16`}
                     >
                         Download in
                         <br />
@@ -308,7 +307,7 @@ export default function Section2() {
                     </p>
                     <p
                         ref={leftCTARef}
-                        className={`${poppins500.className} text-xs mobile2:text-sm text-wrap text-white flex items-center`}
+                        className={`${poppins500.className} text-[10px] mobile2:text-sm text-wrap text-white flex items-center`}
                     >
                         Try it <FaArrowRight className="ml-2" size={12} />
                     </p>
@@ -319,7 +318,7 @@ export default function Section2() {
                     ref={leftDiamondRef}
                     src="/Golden-diamond.svg"
                     alt="Golden Diamond"
-                    className="absolute top-6 right-6"
+                    className="absolute top-6 right-6 "
                 />
 
                 {/* Download Icon with floating class */}
@@ -327,7 +326,7 @@ export default function Section2() {
                     ref={leftDownloadIconRef}
                     src="/download-icon.svg"
                     alt="Cloud Download Arrow icon"
-                    className="absolute bottom-16 left-1/2 transform -translate-x-1/2 floating size-24 mobile:size-32 sm:size-50"
+                    className="absolute bottom-6 mobile:bottom-16 left-1/2 transform -translate-x-1/2 floating size-20 mobile2:size-24 mobile:size-32 sm:size-50"
                 />
             </div>
 
@@ -338,10 +337,10 @@ export default function Section2() {
             >
                 <img src="/sec-2-right-bg.png" alt="Section 2 left bg image" className="object-center opacity-50" />
 
-                <div className="space-y-4 absolute left-10 top-10 z-10">
+                <div className="space-y-4 absolute left-6 mobile:left-10 top-6 mobile:top-10 z-10">
                     <p
                         ref={rightTitleRef}
-                        className={`text-3xl mobile:text-4xl xl:text-5xl whitespace-pre-wrap text-left ${youngserif.className} text-white leading-10 sm:leading-16`}
+                        className={`text-2xl mobile2:text-3xl mobile:text-4xl xl:text-5xl whitespace-pre-wrap text-left ${youngserif.className} text-white leading-8 mobile:leading-10 sm:leading-16`}
                     >
                         Share Effortlessly
                         <br />
@@ -355,7 +354,7 @@ export default function Section2() {
                     </p>
                     <p
                         ref={rightCTARef}
-                        className={`${poppins500.className} text-sm text-wrap text-white flex items-center`}
+                        className={`${poppins500.className} text-[10px] mobile2:text-sm text-wrap text-white flex items-center`}
                     >
                         Try it <FaArrowRight className="ml-2" size={12} />
                     </p>
@@ -368,12 +367,12 @@ export default function Section2() {
                 >
                     <img src="/success-bg.svg" alt="White shade" className="opacity-55" />
 
-                    <div className="w-[60%] flex flex-col justify-center items-center space-y-3 absolute z-10">
-                        <div className="w-8 h-8 bg-white rounded-full flex justify-center items-center">
-                            <FiShare2 className="text-black size-3 sm:size-4" />
+                    <div className="w-[90%] mobile:w-[60%] flex flex-col justify-center items-center space-y-3 absolute z-10">
+                        <div className="w-5 mobile:w-8 h-5 mobile:h-8 bg-white rounded-full flex justify-center items-center">
+                            <FiShare2 className="text-black size-2 mobile:size-3 sm:size-4" />
                         </div>
 
-                        <p className={`${poppins600.className} text-sm sm:text-lg text-white`}>Success!</p>
+                        <p className={`${poppins600.className} text-xs mobile:text-sm sm:text-lg text-white`}>Success!</p>
                         <p className={`${poppins500.className} text-[9px] sm:text-sm text-white/70 text-wrap text-center`}>Thanks for using!, you will be updated with more features.</p>
                     </div>
                 </div>

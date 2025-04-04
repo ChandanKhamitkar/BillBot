@@ -270,7 +270,7 @@ export default function Hero() {
 
             {/* Hero text */}
             <div
-                className={`w-max h-screen mx-auto flex flex-col justify-center items-center space-y-2 mobile:space-y-6 text-white relative z-10 shadow-xl  ${youngserif.className}`}
+                className={`w-max h-screen mx-auto flex flex-col justify-center items-center space-y-2 mobile:space-y-6 text-white relative z-10 shadow-xl overflow-clip  ${youngserif.className}`}
             >   
                 {/* Titles */}
                 <div className="w-max mx-6 mobile:mx-0 flex flex-col justify-center items-center space-y-2 mobile:space-y-6 transfrom -translate-y-3/4 mobile:-translate-y-0">
