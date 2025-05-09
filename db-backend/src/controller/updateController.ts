@@ -2,6 +2,7 @@ import { prisma } from "../lib/prisma.js";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { FirebaseBucket } from "../lib/firebase.js";
+import {fileTypeFromBuffer} from 'file-type';
 
 // method: POST
 // Desc: Update user's Business Details ( such as : Business Name, Owner Name, email, address, gst, upiid)
@@ -76,17 +77,23 @@ export const uploadImage = async (req: any, res: any) => {
     let { chatId, caption } = req.body;
 
     console.log("image file received: ", req.file);
-    const file = req.file?.buffer;
-    if (!file || !chatId || !caption)
-      return res.status(400).json({ message: "All Fields are required ( image | chatId | caption )" });
+    const fileBuffer = req.file?.buffer;
 
+  
+    if (!fileBuffer || !chatId || !caption)
+      return res.status(400).json({ message: "All Fields are required ( image | chatId | caption )" });
+    
+    const bufferUpload = Buffer.isBuffer(fileBuffer) ? fileBuffer : Buffer.from(fileBuffer);
     const uuid = uuidv4();
-    const fileName = `${Date.now()}-${file.originalname}`;
+    const fileName = `logos-${chatId}-${Date.now()}-${req.file?.originalname}`;
     const firebaseFile = FirebaseBucket.file(fileName);
+    const mimeInfo = await fileTypeFromBuffer(bufferUpload);
+    const mime = mimeInfo?.mime || "image/jpeg";
+    console.log("Congtent type : ", mime);
 
     const stream = firebaseFile.createWriteStream({
       metadata: {
-        contentType: file.mimetype,
+        contentType: mime,
         metadata: {
           firebaseStorageDownloadTokens: uuid,
         },
@@ -137,7 +144,7 @@ export const uploadImage = async (req: any, res: any) => {
       });
     });
 
-    stream.end(file.buffer);
+    stream.end(bufferUpload);
   } catch (error) {
     console.log(
       "Error while Uploading Image in Firebase Storage Bucket: ",
