@@ -19,7 +19,7 @@ app.use(
 );
 
 // Default GET route
-app.get("/", (req, res) => {
+app.get("/", (req: any, res: any) => {
   res.send(
     "Prisma + PostgreSQL DB Backend System is Running, I will handle the DB CRUD operations"
   );
