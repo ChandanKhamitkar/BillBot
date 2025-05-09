@@ -110,12 +110,29 @@ export const uploadImage = async (req: any, res: any) => {
         data: {
           [caption]: downloadUrl,
         },
+        select: {
+          email: true,
+          businessName: true,
+          ownerName: true,
+          address: true,
+          UPIID: true,
+          QR: true,
+          logo: true,
+          gstPercent: true,
+          templateNo: true,
+        },
+      });
+
+      // update the redis cache as well
+      await axios.post(`${process.env.REDIS_URL}/setBusinessDetails`, {
+        chatId,
+        data: imageRecord,
       });
 
       res.status(200).json({
         message: "Image uploaded successfully.",
         imageUrl: downloadUrl,
-        success: true
+        success: true,
       });
     });
 
