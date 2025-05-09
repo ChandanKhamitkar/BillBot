@@ -147,11 +147,13 @@ const uploadImage = async(caption: string, chatid: string, photos: any) => {
     const imageResponse = await axios.get(fileUrl, {
       responseType: "arraybuffer",
     });
+    console.log("image response = ", imageResponse.data);
+    const base64Image = Buffer.from(imageResponse.data).toString("base64");
 
     const form = new FormData();
     form.append("chatId", chatid);
     form.append("caption", verifiedCaption || "logo");
-    form.append("image", Buffer.from(imageResponse.data), {
+    form.append("image", Buffer.from(base64Image, "base64"), {
       filename: `${chatid}-${verifiedCaption}.jpg`,
       contentType: imageResponse.headers["content-type"] || "image/jpeg",
     });

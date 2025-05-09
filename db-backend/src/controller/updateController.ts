@@ -75,7 +75,8 @@ export const uploadImage = async (req: any, res: any) => {
   try {
     let { chatId, caption } = req.body;
 
-    const file = req.file;
+    console.log("image file received: ", req.file);
+    const file = req.file?.buffer;
     if (!file || !chatId || !caption)
       return res.status(400).json({ message: "All Fields are required ( image | chatId | caption )" });
 
