@@ -120,34 +120,51 @@ const sendInvoiceToTelegram = async (chatId: string, imageBuffer: any) => {
 const uploadImage = async(caption: string, chatid: string, photos: any) => {
   try {
     let verifiedCaption = caption.toLowerCase();
-      verifiedCaption = verifiedCaption.includes("logo") ? "logo" : "QR";
+    verifiedCaption = verifiedCaption.includes("logo") ? "logo" : "QR";
 
-      const highResolutionImg = photos[photos.length - 1];
-      const fileId = highResolutionImg.file_id
+    const highResolutionImg = photos[photos.length - 1];
+    const fileId = highResolutionImg.file_id;
+    console.log("Using file_id:", fileId);
 
-      // Get file path from Telegram API from CDN
-      const filePathRes = await axios.get(`${TELEGRAM_API}/getFile?file_id=${fileId}`);
-      const filePath = filePathRes.data.result.filePath;
-
-      // Get actual image from Telegram
-      const fileUrl =  `${TELEGRAM_API}/${filePath}`;
-      const imageResponse = await axios.get(fileUrl, { responseType: "arraybuffer"});
-
-      const form = new FormData();
-      form.append("chatId", chatid);
-      form.append("caption", verifiedCaption || "logo");
-      form.append("image", Buffer.from(imageResponse.data), {
-        filename: `${chatid}-${verifiedCaption || "logo"}`,
-        contentType: imageResponse.headers['content-type']
-      });
-      
-      // Hit uploadImage endpoint
-      const uploadRes = await axios.post(
-        `${process.env.DATABASE_URL}/updateUploadImage`,
-        form,
-        { headers: form.getHeaders() }
+    // Get file path from Telegram API from CDN
+    const filePathRes = await axios.get(
+      `${TELEGRAM_API}/getFile?file_id=${fileId}`
+    );
+    if (!filePathRes.data.ok) {
+      console.error("Telegram API error:", filePathRes.data);
+      await sendMessage(
+        chatid,
+        "⚠️ Failed to retrieve image from Telegram. Try again."
       );
-      await sendMessage(chatid, `${verifiedCaption} stored successfull, Now you can generate invoices to see changes. 🥳 Happy Invoicing`);
+      return;
+    }
+
+    console.log("Telegram filepath response = ", filePathRes.data);
+    const filePath = filePathRes.data.result.file_path;
+
+    // Get actual image from Telegram
+    const fileUrl = `https://api.telegram.org/file/bot${process.env.TELEGRAM_TOKEN}/${filePath}`;
+    const imageResponse = await axios.get(fileUrl, {
+      responseType: "arraybuffer",
+    });
+
+    const form = new FormData();
+    form.append("chatId", chatid);
+    form.append("caption", verifiedCaption || "logo");
+    form.append("image", Buffer.from(imageResponse.data), {
+      filename: `${chatid}-${verifiedCaption}.jpg`,
+      contentType: imageResponse.headers["content-type"] || "image/jpeg",
+    });
+
+    // Hit uploadImage endpoint
+    await axios.post(`${process.env.DATABASE_URL}/updateUploadImage`, form, {
+      headers: form.getHeaders(),
+    });
+
+    await sendMessage(
+      chatid,
+      `${verifiedCaption} stored successfull, Now you can generate invoices to see changes. 🥳 Happy Invoicing`
+    );
   } catch (err:any) {
     console.error("Upload failed:", err?.response?.data || err.message);
     await sendMessage(chatid, "Please Try again!!, Make sure you gave caption to image while sending and image type must be jpg/png/jpeg.");
