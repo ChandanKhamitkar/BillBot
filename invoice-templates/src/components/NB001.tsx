@@ -113,7 +113,7 @@ export default function NB001(props: DisplayDataTypes) {
               {/* <p>Bank Name : Swapna Khamitkar</p> */}
               <div className="flex flex-col justify-start items start space-y-2">
                 <p>UPI ID: {businessDetails.UPIID || "Payment UPI ID"}</p>
-                <img src={businessDetails.logo ? businessDetails.logo : "/SampleQR.png"} alt="Payment QR code" className="h-52" />
+                <img src={businessDetails.QR ? businessDetails.QR : "/SampleQR.png"} alt="Payment QR code" className="h-52" />
               </div>
               {/* <p>Account Holder Name : Swapna Khamitkar</p>
               <p>Account Number : 1234567890</p> */}
