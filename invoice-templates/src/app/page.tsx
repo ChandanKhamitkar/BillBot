@@ -13,14 +13,13 @@ export default function Home() {
   const [businessDetails, setBusinessDetails] = useState<BusinessDetailsTypes>({});
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
     if (!chatId) return;
 
     const fetchBusinessDetails = async () => {
       try {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_REDIS_URL}/getBusinessDetails?chatId=${chatId}`);
-        setBusinessDetails(response.data.result);
+        setBusinessDetails(response.data.result);        
       } catch (error) {
         console.error('Failed to fetch Business Details:', error);
       } finally {

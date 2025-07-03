@@ -1,8 +1,21 @@
 import { DisplayDataTypes } from "@/types/data";
+import { useEffect } from "react";
+import generateQRUPI from "@/lib/generaterQR";
 
 export default function NB001(props: DisplayDataTypes) {
   const { data, businessDetails } = props;
   const { name = "", phone = "", items = [], total = "0", shipping = "0", grandTotal = "0" } = data || {};
+
+  useEffect(() => {
+    getQR(data.grandTotal);
+  }, [data.grandTotal]);
+
+  async function getQR(grandTotal: string) {
+    const QR = await generateQRUPI(businessDetails.UPIID || "", businessDetails.ownerName || "", grandTotal);
+    if (QR) {
+      businessDetails.QR = QR;
+    }
+  }
 
 
   const currentDate = new Date().toLocaleDateString("en-US", {
