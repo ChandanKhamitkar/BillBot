@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import axios from "axios";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 
 dotenv.config();
 
@@ -21,10 +21,7 @@ app.use(
 
 // Gemini API setup
 const apiKey = process.env.API_KEY as string;
-const genAI = new GoogleGenerativeAI(apiKey);
-const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash-001",
-});
+const genAI = new GoogleGenAI({ apiKey });
 
 app.post("/verifyMsg", async (req, res) => {
   try {
@@ -104,13 +101,17 @@ const verifyMessageType = async (message: any, chatId: string) => {
   `;
 
   try {
-    const result = await model.generateContent([prompt]);
-    let verifiedType = result.response.text();
+    const result = await genAI.models.generateContent({
+      model: 'gemini-2.0-flash-001',
+      contents: [prompt]
+    });
+    let verifiedType = result.text;
+    console.log("Verified Type: ", verifiedType);
 
-    const jsonMatch = verifiedType.match(/```json\n([\s\S]*?)\n```/);
+    const jsonMatch = verifiedType?.match(/```json\n([\s\S]*?)\n```/);
     const parsedData = jsonMatch
       ? JSON.parse(jsonMatch[1])
-      : JSON.parse(verifiedType);
+      : JSON.parse(verifiedType as string);
     console.log("Extracted Data + Type:", parsedData);
 
     // Conditional Checks
