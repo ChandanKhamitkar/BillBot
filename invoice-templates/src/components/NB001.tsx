@@ -1,22 +1,21 @@
 import { DisplayDataTypes } from "@/types/data";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import generateQRUPI from "@/lib/generaterQR";
 
 export default function NB001(props: DisplayDataTypes) {
   const { data, businessDetails } = props;
   const { name = "", phone = "", items = [], total = "0", shipping = "0", grandTotal = "0" } = data || {};
+  const [qrCode, setQrCode] = useState<string | null>(null);
 
   useEffect(() => {
     getQR(data.grandTotal);
-  }, [data.grandTotal]);
+  }, []);
 
   async function getQR(grandTotal: string) {
     const QR = await generateQRUPI(businessDetails.UPIID || "", businessDetails.ownerName || "", grandTotal);
-    if (QR) {
-      businessDetails.QR = QR.toString();
-    }
+    if (QR) setQrCode(QR.toString());
+    else setQrCode(businessDetails.QR || null);
   }
-
 
   const currentDate = new Date().toLocaleDateString("en-US", {
     month: "long",
@@ -126,7 +125,7 @@ export default function NB001(props: DisplayDataTypes) {
               {/* <p>Bank Name : Swapna Khamitkar</p> */}
               <div className="flex flex-col justify-start items start space-y-2">
                 <p>UPI ID: {businessDetails.UPIID || "Payment UPI ID"}</p>
-                <img src={businessDetails.QR ? businessDetails.QR : "/SampleQR.png"} alt="Payment QR code" className="h-52" />
+                <img src={qrCode ? qrCode : "/SampleQR.png"} alt="Payment QR code" className="h-52" />
               </div>
               {/* <p>Account Holder Name : Swapna Khamitkar</p>
               <p>Account Number : 1234567890</p> */}

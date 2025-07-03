@@ -54,6 +54,8 @@ const webhookController = async (req: any, res: any) => {
         const invoiceUrl = `https://bill-bot-invoice-templates.vercel.app/?chatId=${chatid.toString()}&data=${encodeURIComponent(
           JSON.stringify(verifyExtractData?.data)
         )}`;
+
+        console.log("Invoice URL HIT: ", invoiceUrl);
     
         const imageBuffer = await generateInvoiceImage(invoiceUrl);
         if (!imageBuffer) return sendError(res, chatid, "Error generating invoice image.");
