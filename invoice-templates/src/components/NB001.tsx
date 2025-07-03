@@ -13,7 +13,7 @@ export default function NB001(props: DisplayDataTypes) {
   async function getQR(grandTotal: string) {
     const QR = await generateQRUPI(businessDetails.UPIID || "", businessDetails.ownerName || "", grandTotal);
     if (QR) {
-      businessDetails.QR = QR;
+      businessDetails.QR = QR.toString();
     }
   }
 
