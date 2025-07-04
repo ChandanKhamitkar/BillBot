@@ -4,7 +4,7 @@ import generateQRUPI from "@/lib/generaterQR";
 
 export default function NB001(props: DisplayDataTypes) {
   const { data, businessDetails } = props;
-  const { name = "", phone = "", items = [], total = "0", shipping = "0", grandTotal = "0" } = data || {};
+  let { name = "", phone = "", items = [], total = "0", shipping = "0", grandTotal = "0" } = data || {};
   const [qrCode, setQrCode] = useState<string | null>(null);
 
   useEffect(() => {
@@ -104,7 +104,7 @@ export default function NB001(props: DisplayDataTypes) {
           </p>
           <p className="flex justify-between items-center">
             <span className="font-semibold">GST</span>
-            <span>{businessDetails?.gstPercent ?? 18}%</span>
+            <span>{businessDetails?.gstPercent ?? 0}%</span>
           </p>
           <p className="flex justify-between items-center">
             <span className="font-semibold text-sm">Shipping Charges</span>
@@ -113,7 +113,7 @@ export default function NB001(props: DisplayDataTypes) {
           <div className="h-0.5 bg-black"></div>
           <p className="flex justify-between items-center font-bold text-xl">
             <span>Total</span>
-            <span>{Number(grandTotal) + Number(shipping)}/-</span>
+            <span>{Number(total) + (Number(total) * (businessDetails.gstPercent ? businessDetails.gstPercent/100 : 0)) + Number(shipping)}/-</span>
           </p>
         </div>
 
