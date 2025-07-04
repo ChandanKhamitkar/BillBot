@@ -17,7 +17,7 @@ const webhookController = async (req: any, res: any) => {
 
     // Pretend Typing by default to ALL
     await sendTypingAction(chatid);
-    
+
     // 🖼️ Message empty that means image has been sent
     if (!message && req.body?.message?.photo) {
       // Warning message
@@ -26,9 +26,9 @@ const webhookController = async (req: any, res: any) => {
         "Uploading in progress...\nAccepted Images: Brand Logo\n If any images received, we will assume it as Brand Logo!"
       );
       // await sendMessage(chatid, "Uploading in progress, WARNING⚠️: If no caption is identified then we consider the image as logo of your brand. \nAccepted Caption: qr, logo");
-      
+
       await sendTypingAction(chatid);
-      
+
       // const caption = req.body.message?.caption || "logo";
       const caption = "logo";
       const photos = req.body.message?.photo;
@@ -37,13 +37,15 @@ const webhookController = async (req: any, res: any) => {
         return res.sendStatus(404);
       }
 
+      // Check FIle size
       const rawFileSize = photos[photos.length - 1].file_size;
       const fileSizeInMB = (rawFileSize / (1024 * 1024)).toFixed(2);
-      if (Number(fileSizeInMB) > 1) {
-        // Warning message
-        await sendMessage(chatid, "Max File Size Allowed 1MB 📌");
-      } else {
+      console.log("File Size = ", fileSizeInMB);
+      if (Number(fileSizeInMB) <= 1) {
         await uploadImage(caption, chatid, photos);
+      } else {
+        // Warning message
+        await sendMessage(chatid, "Max File Size Allowed 1MB only ⚠️");
       }
       return res.sendStatus(200);
     }
@@ -61,6 +63,8 @@ const webhookController = async (req: any, res: any) => {
       await sendMessage(chatid, "Help commands yet to add");
       return res.sendStatus(200);
     }
+
+    await sendMessage(chatid, "Processing Please wait...");
 
     // 1. Verify and Extract data ( Data formation state )
     const verifyExtractData = await verifyAndExtract(
@@ -149,6 +153,10 @@ const sendInvoiceToTelegram = async (chatId: string, imageBuffer: any) => {
     return true;
   } catch (error) {
     console.error("Error Sending Invoice:", error);
+    await sendMessage(
+      chatId,
+      "Please Try again!!, Unable to Generate Invoice."
+    );
     return false;
   }
 };
