@@ -4,7 +4,7 @@ import generateQRUPI from "@/lib/generaterQR";
 
 export default function NB001(props: DisplayDataTypes) {
   const { data, businessDetails } = props;
-  let { name = "", phone = "", items = [], total = "0", shipping = "0"} = data || {};
+  const { name = "", phone = "", items = [], total = "0", shipping = "0"} = data || {};
   const [qrCode, setQrCode] = useState<string | null>(null);
 
   useEffect(() => {
