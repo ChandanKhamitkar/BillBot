@@ -39,6 +39,7 @@ const webhookController = async (req: any, res: any) => {
 
       // Check FIle size
       const rawFileSize = photos[photos.length - 1].file_size;
+      console.log("Raw File Size = ", rawFileSize);
       const fileSizeInMB = (rawFileSize / (1024 * 1024)).toFixed(2);
       console.log("File Size = ", fileSizeInMB);
       if (Number(fileSizeInMB) <= 1) {
