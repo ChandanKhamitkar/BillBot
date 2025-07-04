@@ -15,67 +15,92 @@ const webhookController = async (req: any, res: any) => {
     const message = req.body?.message?.text || null;
     const chatid = req.body?.message?.chat?.id;
 
+    // Pretend Typing by default to ALL
+    await sendTypingAction(chatid);
+    
     // 🖼️ Message empty that means image has been sent
-    if(!message && req.body?.message?.photo){
-
+    if (!message && req.body?.message?.photo) {
       // Warning message
-      await sendMessage(chatid, "Uploading in progress...\nAccepted Images: Brand Logo\n If any images received, we will assume it as Brand Logo!");
+      await sendMessage(
+        chatid,
+        "Uploading in progress...\nAccepted Images: Brand Logo\n If any images received, we will assume it as Brand Logo!"
+      );
       // await sendMessage(chatid, "Uploading in progress, WARNING⚠️: If no caption is identified then we consider the image as logo of your brand. \nAccepted Caption: qr, logo");
+      
+      await sendTypingAction(chatid);
       
       // const caption = req.body.message?.caption || "logo";
       const caption = "logo";
       const photos = req.body.message?.photo;
       if (!photos || photos.length === 0) {
         await sendMessage(chatid, "❌ No image received. Please try again.");
-        return res.sendStatus(404);;
+        return res.sendStatus(404);
       }
-      
+
       const rawFileSize = photos[photos.length - 1].file_size;
       const fileSizeInMB = (rawFileSize / (1024 * 1024)).toFixed(2);
-      if(Number(fileSizeInMB) > 1) {
+      if (Number(fileSizeInMB) > 1) {
         // Warning message
         await sendMessage(chatid, "Max File Size Allowed 1MB 📌");
-      }
-      else {
+      } else {
         await uploadImage(caption, chatid, photos);
       }
       return res.sendStatus(200);
-    } 
+    }
 
-    //🔸 Send Default Messages 
-    if(message === "/start"){
+    //🔸 Send Default Messages
+    if (message === "/start") {
       await sendMessage(chatid, defaultMessage["/start"]);
-      await axios.post(`${process.env.DATABASE_URL}/createUser`, { chatId : chatid.toString() })
+      await axios.post(`${process.env.DATABASE_URL}/createUser`, {
+        chatId: chatid.toString(),
+      });
       return res.sendStatus(200);
     }
     //🔸 Send Default Messages
-    else if(message === "/help"){
+    else if (message === "/help") {
       await sendMessage(chatid, "Help commands yet to add");
       return res.sendStatus(200);
     }
 
     // 1. Verify and Extract data ( Data formation state )
-    const verifyExtractData = await verifyAndExtract(message, chatid.toString());
-    console.log('after verifaction response  = ', verifyExtractData, typeof(verifyExtractData));
-    if (!verifyExtractData || verifyExtractData.type === "error" || verifyExtractData.type === "notify") return sendError(res, chatid, verifyExtractData.message || "Please try again!");
+    const verifyExtractData = await verifyAndExtract(
+      message,
+      chatid.toString()
+    );
+    console.log(
+      "after verifaction response  = ",
+      verifyExtractData,
+      typeof verifyExtractData
+    );
+    if (
+      !verifyExtractData ||
+      verifyExtractData.type === "error" ||
+      verifyExtractData.type === "notify"
+    )
+      return sendError(
+        res,
+        chatid,
+        verifyExtractData.message || "Please try again!"
+      );
 
-    if(verifyExtractData.type === "extraction"){
-        // 2. Generate Invoice image
-        const invoiceUrl = `https://bill-bot-invoice-templates.vercel.app/?chatId=${chatid.toString()}&data=${encodeURIComponent(
-          JSON.stringify(verifyExtractData?.data)
-        )}`;
+    if (verifyExtractData.type === "extraction") {
+      // 2. Generate Invoice image
+      const invoiceUrl = `https://bill-bot-invoice-templates.vercel.app/?chatId=${chatid.toString()}&data=${encodeURIComponent(
+        JSON.stringify(verifyExtractData?.data)
+      )}`;
 
-        console.log("Invoice URL HIT: ", invoiceUrl);
-    
-        const imageBuffer = await generateInvoiceImage(invoiceUrl);
-        if (!imageBuffer) return sendError(res, chatid, "Error generating invoice image.");
-    
-        // 3. Send Invoice image
-        const imageSent = await sendInvoiceToTelegram(chatid, imageBuffer);
-        if (!imageSent) return sendError(res, chatid, "Error sending invoice.");
-    
-        // Send extracted text as confirmation message
-        await sendMessage(chatid, "Here is your invoice Generated...");
+      console.log("Invoice URL HIT: ", invoiceUrl);
+
+      const imageBuffer = await generateInvoiceImage(invoiceUrl);
+      if (!imageBuffer)
+        return sendError(res, chatid, "Error generating invoice image.");
+
+      // 3. Send Invoice image
+      const imageSent = await sendInvoiceToTelegram(chatid, imageBuffer);
+      if (!imageSent) return sendError(res, chatid, "Error sending invoice.");
+
+      // Send extracted text as confirmation message
+      await sendMessage(chatid, "Here is your invoice Generated...");
     }
 
     return res.sendStatus(200);
@@ -87,7 +112,7 @@ const webhookController = async (req: any, res: any) => {
 
 // 1🔹 Verify and Extract data using GenAI API
 const verifyAndExtract = async (message: string, chatId: string) => {
-  try {   
+  try {
     const response = await axios.post(
       "https://bill-bot-genai.vercel.app/verifyMsg",
       { text: JSON.stringify(message), chatId: chatId }
@@ -129,7 +154,7 @@ const sendInvoiceToTelegram = async (chatId: string, imageBuffer: any) => {
 };
 
 // 🔹Upload image to Cloud Firebase ( hit endpoint )
-const uploadImage = async(caption: string, chatid: string, photos: any) => {
+const uploadImage = async (caption: string, chatid: string, photos: any) => {
   try {
     let verifiedCaption = caption.toLowerCase();
     // verifiedCaption = verifiedCaption.includes("logo") ? "logo" : "logo";
@@ -180,13 +205,15 @@ const uploadImage = async(caption: string, chatid: string, photos: any) => {
       chatid,
       `${verifiedCaption} stored successfull, Now you can generate invoices to see changes. 🥳 Happy Invoicing`
     );
-  } catch (err:any) {
+  } catch (err: any) {
     console.error("Upload failed:", err?.response?.data || err.message);
-    await sendMessage(chatid, "Please Try again!!, Make sure image type must be jpg/png/jpeg & of MAX size 1MB");
+    await sendMessage(
+      chatid,
+      "Please Try again!!, Make sure image type must be jpg/png/jpeg & of MAX size 1MB"
+    );
     // await sendMessage(chatid, "Please Try again!!, Make sure you gave caption to image while sending and image type must be jpg/png/jpeg.");
   }
-      
-}
+};
 
 // 🔹 Send a text message to Telegram
 const sendMessage = async (chatId: string, text: string) => {
@@ -194,6 +221,18 @@ const sendMessage = async (chatId: string, text: string) => {
     await axios.post(`${TELEGRAM_API}/sendMessage`, { chat_id: chatId, text });
   } catch (error) {
     console.error("Error Sending Message:", error);
+  }
+};
+
+// 🔹Pretend Bot as Typing
+const sendTypingAction = async (chatId: string) => {
+  try {
+    await axios.post(`${TELEGRAM_API}/sendChatAction`, {
+      chat_id: chatId,
+      action: "typing",
+    });
+  } catch (error) {
+    console.error("Error sending typing action:", error);
   }
 };
 
