@@ -8,7 +8,7 @@ export default function NB001(props: DisplayDataTypes) {
   const [qrCode, setQrCode] = useState<string | null>(null);
 
   useEffect(() => {
-    getQR((Number(total) + (Number(total) * (businessDetails.gstPercent ? businessDetails.gstPercent/100 : 0)) + Number(shipping).toString()));
+    getQR((Number(total) + (Number(total) * (businessDetails.gstPercent ? businessDetails.gstPercent/100 : 0)) + Number(shipping)).toString());
   }, []);
 
   async function getQR(grandTotal: string) {
