@@ -15,7 +15,6 @@ model User {
   ownerName String?
   address String?
   UPIID String?
-  QR String?
   logo String?
   gstPercent Int @default(0)
   templateNo Int @default(1)

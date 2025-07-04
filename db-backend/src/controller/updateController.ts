@@ -44,7 +44,6 @@ export const updateBusinessDetails = async (req: any, res: any) => {
         ownerName: true,
         address: true,
         UPIID: true,
-        QR: true,
         logo: true,
         gstPercent: true,
         templateNo: true,
@@ -76,7 +75,7 @@ export const uploadImage = async (req: any, res: any) => {
   try {
     let { chatId, caption } = req.body;
 
-    console.log("image file received: ", req.file);
+    // console.log("image file received: ", req.file);
     const fileBuffer = req.file?.buffer;
 
   
@@ -124,7 +123,6 @@ export const uploadImage = async (req: any, res: any) => {
           ownerName: true,
           address: true,
           UPIID: true,
-          QR: true,
           logo: true,
           gstPercent: true,
           templateNo: true,

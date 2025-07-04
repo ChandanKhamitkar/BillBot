@@ -24,7 +24,6 @@ export const getBusinessDetails = async (req: any, res: any) => {
             ownerName: true,
             address: true,
             UPIID: true,
-            QR: true,
             logo: true,
             gstPercent: true,
             templateNo: true

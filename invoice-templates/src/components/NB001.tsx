@@ -4,17 +4,17 @@ import generateQRUPI from "@/lib/generaterQR";
 
 export default function NB001(props: DisplayDataTypes) {
   const { data, businessDetails } = props;
-  let { name = "", phone = "", items = [], total = "0", shipping = "0", grandTotal = "0" } = data || {};
+  let { name = "", phone = "", items = [], total = "0", shipping = "0"} = data || {};
   const [qrCode, setQrCode] = useState<string | null>(null);
 
   useEffect(() => {
-    getQR(data.grandTotal);
+    getQR((Number(total) + (Number(total) * (businessDetails.gstPercent ? businessDetails.gstPercent/100 : 0)) + Number(shipping).toString()));
   }, []);
 
   async function getQR(grandTotal: string) {
     const QR = await generateQRUPI(businessDetails.UPIID || "", businessDetails.ownerName || "", grandTotal);
     if (QR) setQrCode(QR.toString());
-    else setQrCode(businessDetails.QR || null);
+    else setQrCode(null);
   }
 
   const currentDate = new Date().toLocaleDateString("en-US", {

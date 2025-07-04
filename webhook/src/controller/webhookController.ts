@@ -19,16 +19,26 @@ const webhookController = async (req: any, res: any) => {
     if(!message && req.body?.message?.photo){
 
       // Warning message
-      await sendMessage(chatid, "Uploading in progress, WARNING⚠️: If no caption is identified then we consider the image as logo of your brand. \nAccepted Caption: qr, logo");
+      await sendMessage(chatid, "Uploading in progress...\nAccepted Images: Brand Logo\n If any images received, we will assume it as Brand Logo!");
+      // await sendMessage(chatid, "Uploading in progress, WARNING⚠️: If no caption is identified then we consider the image as logo of your brand. \nAccepted Caption: qr, logo");
       
-      const caption = req.body.message?.caption || "logo";
+      // const caption = req.body.message?.caption || "logo";
+      const caption = "logo";
       const photos = req.body.message?.photo;
       if (!photos || photos.length === 0) {
         await sendMessage(chatid, "❌ No image received. Please try again.");
         return res.sendStatus(404);;
       }
       
-      await uploadImage(caption, chatid, photos);
+      const rawFileSize = photos[photos.length - 1].file_size;
+      const fileSizeInMB = (rawFileSize / (1024 * 1024)).toFixed(2);
+      if(Number(fileSizeInMB) > 1) {
+        // Warning message
+        await sendMessage(chatid, "Max File Size Allowed 1MB 📌");
+      }
+      else {
+        await uploadImage(caption, chatid, photos);
+      }
       return res.sendStatus(200);
     } 
 
@@ -122,7 +132,8 @@ const sendInvoiceToTelegram = async (chatId: string, imageBuffer: any) => {
 const uploadImage = async(caption: string, chatid: string, photos: any) => {
   try {
     let verifiedCaption = caption.toLowerCase();
-    verifiedCaption = verifiedCaption.includes("logo") ? "logo" : "QR";
+    // verifiedCaption = verifiedCaption.includes("logo") ? "logo" : "logo";
+    verifiedCaption = "logo";
 
     const highResolutionImg = photos[photos.length - 1];
     const fileId = highResolutionImg.file_id;
@@ -171,7 +182,8 @@ const uploadImage = async(caption: string, chatid: string, photos: any) => {
     );
   } catch (err:any) {
     console.error("Upload failed:", err?.response?.data || err.message);
-    await sendMessage(chatid, "Please Try again!!, Make sure you gave caption to image while sending and image type must be jpg/png/jpeg.");
+    await sendMessage(chatid, "Please Try again!!, Make sure image type must be jpg/png/jpeg & of MAX size 1MB");
+    // await sendMessage(chatid, "Please Try again!!, Make sure you gave caption to image while sending and image type must be jpg/png/jpeg.");
   }
       
 }

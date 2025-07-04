@@ -25,7 +25,6 @@ export interface BusinessDetailsTypes{
     ownerName?: string | null;
     address?: string | null;
     UPIID?: string | null;
-    QR?: string | null;
     logo?: string | null;
     gstPercent?: number;
     templateNo?: number;
