@@ -12,9 +12,12 @@ export default function NB001(props: DisplayDataTypes) {
   }, []);
 
   async function getQR(grandTotal: string) {
-    const QR = await generateQRUPI(businessDetails.UPIID || "", businessDetails.ownerName || "", grandTotal);
-    if (QR) setQrCode(QR.toString());
-    else setQrCode(null);
+    
+    if(businessDetails.UPIID != null && businessDetails.UPIID != ""){
+      const QR = await generateQRUPI(businessDetails.UPIID || "", businessDetails.ownerName || "", grandTotal);
+      if (QR) setQrCode(QR.toString());
+      else setQrCode(null);
+    }
   }
 
   const currentDate = new Date().toLocaleDateString("en-US", {
