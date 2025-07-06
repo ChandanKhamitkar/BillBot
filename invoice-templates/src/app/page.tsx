@@ -10,7 +10,16 @@ export default function Home() {
   const chatId = searchParams.get('chatId');
   let rawData = searchParams.get('data');
 
-  const [businessDetails, setBusinessDetails] = useState<BusinessDetailsTypes>({});
+  const [businessDetails, setBusinessDetails] = useState<BusinessDetailsTypes>({
+    email: null,
+    businessName: null,
+    ownerName: null,
+    address: null,
+    UPIID: null,
+    logo: null,
+    gstPercent: 0,
+    templateNo: 0
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,7 +28,7 @@ export default function Home() {
     const fetchBusinessDetails = async () => {
       try {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_REDIS_URL}/getBusinessDetails?chatId=${chatId}`);
-        setBusinessDetails(response.data.result);        
+        setBusinessDetails(response.data.result);
       } catch (error) {
         console.error('Failed to fetch Business Details:', error);
       } finally {
